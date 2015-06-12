@@ -24,18 +24,18 @@
 
     <main class="container">
         <div class="row">
-            <div class="span12">
+            <div class="offset1 span10">
                 <div class="navbar">
-                    <div class="navbar-inner">
-                        <ul class="nav">
-                            <li class="divider-vertical">
-                                <label>Max Price
-                                    <input type="text" placeholder="Type Max Price">
-                                </label>
-                            </li>
-                            <li class="divider-vertical">
-                                <label>Min Bedrooms
-                                    <select>
+                    <form class="form-inline">
+                        <div class="navbar-inner">
+                            <a class="brand">Filter by:</a>
+                            <ul class="nav">
+                                <li class="divider-vertical">
+                                    <input type="text" class="input-small" placeholder="Max Price">
+                                </li>
+                                <li class="divider-vertical">
+                                    <select class="input-small">
+                                        <option value="" disabled selected>Min Bed</option>
                                         <option> 1 </option>
                                         <option> 2 </option>
                                         <option> 3 </option>
@@ -43,43 +43,42 @@
                                         <option> 5 </option>
                                         <option> 6 </option>
                                     </select>
-                                </label>
-                            </li>
-                            <li class="divider-vertical">
-                                <label>Min Bathrooms
-                                    <select>
+                                </li>
+                                <li class="divider-vertical">
+                                    <select class="input-small">
+                                        <option value="" disabled selected>Min Bath</option>
                                         <option> 1 </option>
                                         <option> 2 </option>
                                         <option> 3 </option>
                                     </select>
-                                </label>
-                            </li>
-                            <li class="divider-vertical">
-                                <label>Gender:
-                                <select>
-                                    <option>Male</option>
-                                    <option>Female</option>
-                                </select>
-                                </label>
-                            </li>
-                            <li class="divider-vertical">
-                                <label class="checkbox">
-                                    <input type="checkbox">$100 Reward
-                                </label>
-                            </li>
-                        </ul>
-                        <button class="btn btn-success">GO!</button>
-                    </div>
+                                </li>
+                                <li class="divider-vertical">
+                                    <select class="input-small">
+                                        <option value="" disabled selected>Gender</option>
+                                        <option>Any</option>
+                                        <option>Male</option>
+                                        <option>Female</option>
+                                    </select>
+                                </li>
+                                <li class="divider-vertical">
+                                    <label class="checkbox span2">
+                                        <input type="checkbox">$100 Reward
+                                    </label>
+                                </li>
+                                <button type="submit" class="btn btn-success">GO!</button>
+                            </ul>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="span3">
+            <div class="offset1 span3">
                 <ul>
                     <li>House listing :)</li>
                 </ul>
             </div>
-            <div class="span9">
+            <div class="span7">
                 <div id="map-canvas"></div>
             </div>
         </div>
