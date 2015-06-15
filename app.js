@@ -102,7 +102,10 @@ function processData(data) {
                         "properties": {
                             "name": getName(result["aid"], result["list"]),
                             "buildid": result["buildid"],
+                            "price": result["price"],
                             "description": result["body"],
+                            "baths": result["baths"],
+                            "beds": result["beds"],
                             "image": result["images"][0].thumb,
                             "sublease": isSublease(result["aid"]),
                             "url": result["url"],
@@ -165,8 +168,11 @@ function displayListItem(listing, index) {
     if (!listing.sublease) {
         $container.addClass('affiliate');
     }
-    var $firstListing = $('<header class="accordion-heading"><a class="accordion-toggle" data-parent="#js-listings" data-toggle="collapse" href="#js-listing-' + index + '"><img class="cover-image cover-image-sm" src="' + listing.image + '"><h3 class="title">' + listing.name + '</a></h3></header>');
-    //$firstListing.append('<p>' + listing.beds + ' beds, ' + listing.baths + ' baths' + '</p>');
+    var $firstListing = $('<header class="accordion-heading clearfix"><a class="accordion-toggle" data-parent="#js-listings" data-toggle="collapse" href="#js-listing-' + index + '"><img class="cover-image cover-image-sm" src="' + listing.image + '"><h3 class="title">' + listing.name + '</a></h3></header>');
+    var $floated = $('<div class="floated-details clearfix"><div class="fields"></div></div>');
+    $floated.append('<div class="price-wrapper field"><h4 class="price">$' + listing.price + '+</h4></div>');
+    $floated.append('<div class="bed-bath-sub field">' + listing.beds + " bedrooms | " + listing.baths + ' baths</div>');
+    $firstListing.append($floated);
     $container.append($firstListing);
     return $container;
 }
