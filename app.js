@@ -161,7 +161,10 @@ function displayListings() {
 
 function displayListItem(listing, index) {
     var $container = $('<div class="accordion-group">');
-    var $firstListing = $('<header class="accordion-heading"><a class="accordion-toggle" data-parent="#js-listings" data-toggle="collapse" href="#js-listing-' + index + '">' + listing.list + '</a></header>');
+    if (!isSublease(listing)) {
+        $container.addClass('affiliate');
+    }
+    var $firstListing = $('<header class="accordion-heading"><a class="accordion-toggle" data-parent="#js-listings" data-toggle="collapse" href="#js-listing-' + index + '"><img class="cover-image cover-image-sm" src="' + listing.images[0].thumb + '"><h3 class="title">' + listing.list + '</a></h3></header>');
     $firstListing.append('<p>' + listing.beds + ' beds, ' + listing.baths + ' baths' + '</p>');
     $container.append($firstListing);
     return $container;
