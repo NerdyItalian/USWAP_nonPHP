@@ -1,8 +1,5 @@
 var processedData;
 
-// Listings are represented as a multi-dimensional array of objects. Some arrays will be just the one object.
-var listings = [];
-
 function initializeCallback() {
     var mapOptions = {
         center: { lat: 44.9747, lng: -93.2354},
@@ -75,31 +72,50 @@ function processData(data) {
     };
     for (var i=0; i < data.results.length; i++) {
         var result = data.results[i];
-        if (result["active"] == "1") {
-            // Process object into GeoJSON to display it on the map
-            geoJsonObject["features"].push(
-                {
-                    "type": "Feature",
-                    "geometry": {
-                        "type": "Point",
-                        "coordinates": [parseFloat(result["lng"]), parseFloat(result["lat"])]
-                    },
-                    "properties": {
-                        "name": getName(result["aid"], result["list"]),
-                        "description": result["body"],
-                        "sublease": isSublease(result["aid"]),
-                        "url": result["url"]
-                    }
-                }
-            );
-            console.log("geoJsonObject:", geoJsonObject);
 
-            // Sort result data into an array of listings based on building ID
-            sortListing(result);
+        if (result["active"] == "1") {
+            // Get the index of a listing if there are other listings
+            var listingIndex = getOtherListings(result.buildid, geoJsonObject["features"]);
+
+            console.log("Listing index for result ", i, ":", listingIndex);
+
+            // Only add a listing to a group of buildings if the listing is like so
+            if (listingIndex != null && !isSublease(result["aid"])) {
+                geoJsonObject["features"][listingIndex].properties["additional"].push({
+                    "name": getName(result["aid"], result["list"]),
+                    "buildid": result["buildid"],
+                    "description": result["body"],
+                    "sublease": isSublease(result["aid"]),
+                    "url": result["url"]
+                });
+            }
+
+            else {
+            // Process object into GeoJSON to display it on the map
+                geoJsonObject["features"].push(
+                    {
+                        "type": "Feature",
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": [parseFloat(result["lng"]), parseFloat(result["lat"])]
+                        },
+                        "properties": {
+                            "name": getName(result["aid"], result["list"]),
+                            "buildid": result["buildid"],
+                            "description": result["body"],
+                            "image": result["images"][0].thumb,
+                            "sublease": isSublease(result["aid"]),
+                            "url": result["url"],
+                            "additional": []
+                        }
+                    }
+                );
+            }
+            console.log("geoJsonObject:", geoJsonObject);
             }
         }
     processedData = geoJsonObject;
-    displayListings();
+    displayListings(processedData.features);
 }
 
 function isSublease(aid) {
@@ -118,42 +134,27 @@ function getName(aid, list) {
     }
 }
 
-function getBuilding(listing) {
-    if (listing instanceof Array) {
-        return listing[0].buildid;
-    } else {
-        return listing.buildid;
-    }
-}
-
-function sortListing(listing) {
-    // If sublease: put it into the listing array as-is -- all of these will be arrays of listings in a building
-    if (isSublease(listing.aid)) {
-        listings.push([listing]);
-    } else {
-        // Check if the listing's building ID is already in global var listings
-        // If it is: put it into that array; otherwise put it into its own array
-        var i;
-        for (i=0; i<listings.length; i++) {
-            console.log("Listings ", i, ":", getBuilding(listings[i]), "==", getBuilding(listing));
-            if (getBuilding(listings[i]) == getBuilding(listing)) {
-                listings[i].push(listing);
-                return;
-            }
+function getOtherListings(id, array) {
+    var i;
+    for (i=0; i<array.length; i++) {
+        console.log("Checking if ", array[i].properties["buildid"], "is equal to ", id);
+        if (array[i].properties["buildid"] == id) {
+            console.log("It's equal");
+            return i;
         }
-        listings.push([listing]);
     }
 }
 
 // Accordion display functions
-function displayListings() {
+function displayListings(data) {
     var $housing = $('.js-housing');
-    var i, j;
-    for (i=0; i<listings.length; i++) {
-        var $container = displayListItem(listings[i][0], i);
-        if (listings[i].length > 1) {
-            $container.find('.accordion-heading').append('<p><em>Click to view all ' + listings[i].length + ' floor plans</em></p>');
-            $container.append(displayAccordionItems(listings[i], i));
+    var i;
+    for (i=0; i<data.length; i++) {
+        var listing = data[i].properties;
+        var $container = displayListItem(listing, i);
+        if (listing.additional.length > 0) {
+            $container.find('.accordion-heading').append('<p><em>Click to view ' + listing.additional.length + ' additional floor plans</em></p>');
+            $container.append(displayAccordionItems(listing.additional, i));
         }
         $housing.append($container);
     }
@@ -161,11 +162,11 @@ function displayListings() {
 
 function displayListItem(listing, index) {
     var $container = $('<div class="accordion-group">');
-    if (!isSublease(listing)) {
+    if (!listing.sublease) {
         $container.addClass('affiliate');
     }
-    var $firstListing = $('<header class="accordion-heading"><a class="accordion-toggle" data-parent="#js-listings" data-toggle="collapse" href="#js-listing-' + index + '"><img class="cover-image cover-image-sm" src="' + listing.images[0].thumb + '"><h3 class="title">' + listing.list + '</a></h3></header>');
-    $firstListing.append('<p>' + listing.beds + ' beds, ' + listing.baths + ' baths' + '</p>');
+    var $firstListing = $('<header class="accordion-heading"><a class="accordion-toggle" data-parent="#js-listings" data-toggle="collapse" href="#js-listing-' + index + '"><img class="cover-image cover-image-sm" src="' + listing.image + '"><h3 class="title">' + listing.name + '</a></h3></header>');
+    //$firstListing.append('<p>' + listing.beds + ' beds, ' + listing.baths + ' baths' + '</p>');
     $container.append($firstListing);
     return $container;
 }
@@ -176,7 +177,7 @@ function displayAccordionItems(listing, index) {
 
     for (i=0; i<listing.length; i++) {
         $listing = $('<div class="accordion-inner">');
-        $listing.append('<p>' + listing[i].list + '</p>');
+        $listing.append('<p>' + listing[i].name + '</p>');
         $container.append($listing);
     }
     return $container;

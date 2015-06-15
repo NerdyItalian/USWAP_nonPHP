@@ -3,8 +3,17 @@
     background-color: #f5f5f5;
 }
 
+.accordion-heading a {
+    font-weight: 300;
+    color: #000;
+}
+
 .cover-image-sm {
     min-width: 15%;
     width: 15%;
     border: 1px #333 solid;
+}
+
+.affiliate {
+    background-color: #9ec784;
 }
