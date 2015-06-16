@@ -12,7 +12,7 @@ function getData(callback, initialize) {
     $.ajax({
         type: 'GET',
         dataType: 'json',
-        url: 'dummyData.json',
+        url: 'correctedJSON.json',
         success: function(data, textstatus) {
             console.log(data);
             // Process the data
@@ -43,8 +43,8 @@ function processData(data) {
         "type": "FeatureCollection",
         "features": []
     };
-    for (var i=0; i < data.results.length; i++) {
-        var result = data.results[i];
+    for (var i=0; i < data.length; i++) {
+        var result = data[i];
 
         // Only process the data if the result listing is currently active
         if (result["active"] == "1") {
@@ -94,13 +94,14 @@ function processData(data) {
                             "coordinates": [parseFloat(result["lng"]), parseFloat(result["lat"])]
                         },
                         "properties": {
+                            "weight": i + 1,
                             "name": getName(result["aid"], result["list"]),
                             "buildid": result["buildid"],
                             "price": result["price"],
                             "description": result["body"],
                             "baths": result["baths"],
                             "beds": result["beds"],
-                            "image": result["images"][0].thumb,
+                            "image": getThumbnail(result["images"]),
                             "sublease": isSublease(result["aid"]),
                             "url": result["url"],
                             "additional": []
@@ -165,10 +166,18 @@ function initializeCallback() {
         windowObjectReference = window.open(address, "__blank");
     });
 }
+//returns either the location of the property's first thumbnail url OR an "image not available" image, if there is none.
+function getThumbnail(images) {
+    if (images) {
+        return images[0].thumb;
+    }else{
+        return "noimageavailable.png";
+    }
+}
 
 // Returns true or false based on the presence of "aid" property -- "aid" is a number that will be null on subleases and not null on promotional properties
 function isSublease(aid) {
-    if (aid == null) {
+    if (aid == null || aid == 0) {
         return true;
     }else {
         return false;
@@ -177,7 +186,7 @@ function isSublease(aid) {
 
 // Returns "Sublease" for the name if the property is a sublease; otherwise returns the name itself -- we do this because sublease names can get really long
 function getName(aid, list) {
-    if (aid == null) {
+    if (aid == null || aid == 0) {
         return "Sublease";
     } else {
         return list;
