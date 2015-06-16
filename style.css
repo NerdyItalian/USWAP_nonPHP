@@ -26,3 +26,8 @@
     box-sizing: border-box;
     padding: 5px;
 }
+
+.js-housing {
+    height: 600px;
+    overflow: scroll;
+}
