@@ -84,7 +84,10 @@ function processData(data) {
                 geoJsonObject["features"][listingIndex].properties["additional"].push({
                     "name": getName(result["aid"], result["list"]),
                     "buildid": result["buildid"],
+                    "price": result["price"],
                     "description": result["body"],
+                    "baths": result["baths"],
+                    "beds": result["beds"],
                     "sublease": isSublease(result["aid"]),
                     "url": result["url"]
                 });
@@ -141,7 +144,7 @@ function getOtherListings(id, array) {
     var i;
     for (i=0; i<array.length; i++) {
         console.log("Checking if ", array[i].properties["buildid"], "is equal to ", id);
-        if (array[i].properties["buildid"] == id) {
+        if (array[i].properties["buildid"] == id && !array[i].properties["sublease"]) {
             console.log("It's equal");
             return i;
         }
@@ -168,8 +171,8 @@ function displayListItem(listing, index) {
     if (!listing.sublease) {
         $container.addClass('affiliate');
     }
-    var $firstListing = $('<header class="accordion-heading clearfix"><a class="accordion-toggle" data-parent="#js-listings" data-toggle="collapse" href="#js-listing-' + index + '"><img class="cover-image cover-image-sm" src="' + listing.image + '"><h3 class="title">' + listing.name + '</a></h3></header>');
-    var $floated = $('<div class="floated-details clearfix"><div class="fields"></div></div>');
+    var $firstListing = $('<header class="accordion-heading clearfix"><a class="accordion-toggle" data-parent="#js-listings" data-toggle="collapse" href="#js-listing-' + index + '"><img class="img-polaroid cover-image-sm pull-left" src="' + listing.image + '"><h3 class="title">' + listing.name + '</a></h3></header>');
+    var $floated = $('<div class="clearfix"><div class="fields"></div></div>');
     $floated.append('<div class="price-wrapper field"><h4 class="price">$' + listing.price + '+</h4></div>');
     $floated.append('<div class="bed-bath-sub field">' + listing.beds + " bedrooms | " + listing.baths + ' baths</div>');
     $firstListing.append($floated);
@@ -182,8 +185,9 @@ function displayAccordionItems(listing, index) {
     var i, $listing;
 
     for (i=0; i<listing.length; i++) {
-        $listing = $('<div class="accordion-inner">');
-        $listing.append('<p>' + listing[i].name + '</p>');
+        $listing = $('<div class="accordion-inner clearfix">');
+        $listing.append('<div class="pull-left"><h4>' + listing[i].name + '</h4><p>' + listing[i].beds + ' beds, ' + listing[i].baths + ' baths</p></div>');
+        $listing.append('<div class="pull-right"><h4>$' + listing[i].price + '+</h4>' + '<button class="btn btn-info">View details</button></div>');
         $container.append($listing);
     }
     return $container;

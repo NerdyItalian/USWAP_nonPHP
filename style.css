@@ -9,11 +9,20 @@
 }
 
 .cover-image-sm {
-    min-width: 15%;
     width: 15%;
-    border: 1px #333 solid;
 }
 
 .affiliate {
-    background-color: #9ec784;
+    background: #9ec784 linear-gradient(to bottom, #9ec784, #86ba6b);
+    border: 1px solid #608945;
+}
+
+.accordion-inner {
+    border-top: 1px solid #608945;
+}
+
+.width-33 {
+    width: 33%;
+    box-sizing: border-box;
+    padding: 5px;
 }
