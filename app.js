@@ -77,6 +77,7 @@ function processData(data) {
                     "number": i,
                     "buildid": result["buildid"],
                     "price": result["price"],
+                    "gender": result["gender"],
                     "description": result["body"],
                     "baths": result["baths"],
                     "beds": result["beds"],
@@ -104,6 +105,7 @@ function processData(data) {
                                 "number": i,
                                 "buildid": result["buildid"],
                                 "price": result["price"],
+                                "gender": result["gender"],
                                 "description": result["body"],
                                 "baths": result["baths"],
                                 "beds": result["beds"],
@@ -125,6 +127,7 @@ function processData(data) {
                             "name": "Sublease",
                             "number": i,
                             "price": result["price"],
+                            "gender": result["gender"],
                             "description": result["body"],
                             "baths": result["baths"],
                             "beds": result["beds"],
@@ -290,7 +293,7 @@ function displaySublease(listing, index) {
 
     var $title = $('<h3 class="listing-sublease-title">' + listing.name + '</h3>');
     var $price = $('<h3 class="listing-price">$' + listing.price + '+</h4>');
-    var $details = $('<div class="listing-sublease-details"><p>' + listing.beds + ' beds | ' + listing.baths + ' baths</p></div>');
+    var $details = $('<div class="listing-sublease-details"><p>' + formatPlural(listing.beds, 'bed', 'beds') + ' | ' + formatPlural(listing.baths, 'bath', 'baths') + ' | ' + formatGender(listing.gender) + '</p></div>');
     var $button = $('<a href="' + listing.url + '" target="_blank"><button class="btn btn-default btn-sublease">View Details</button></a>');
 
     $header.append($title);
@@ -357,11 +360,33 @@ function displayAccordionItems(listings, index) {
 
     for (i=0; i<listings.length; i++) {
         $listing = $('<div class="accordion-inner clearfix">');
-        $listing.append('<div class="pull-left"><h4>' + listings[i].name + '</h4><p>' + listings[i].beds + ' beds | ' + listings[i].baths + ' baths</p></div>');
+        $listing.append('<div class="pull-left"><h4>' + listings[i].name + '</h4><p>' + formatPlural(listings[i].beds, 'bed', 'beds') + ' | ' + formatPlural(listings[i].baths, 'bath', 'baths') + ' | ' + formatGender(listings[i].gender) + '</p></div>');
         $listing.append('<div class="pull-right"><h4>$' + listings[i].price + '+</h4><a href="' + listings[i].url + '" target="_blank"' + '<button class="btn btn-success">View details</button></a></div>');
         $container.append($listing);
     }
     return $container;
+}
+
+// Utility display functions used by the result display
+function formatPlural(number, singular, plural) {
+    if (number == 1) {
+        return '1 ' + singular;
+    } else {
+        return number + ' ' + plural;
+    }
+}
+
+function formatGender(gender) {
+    switch(gender) {
+        case 'Male':
+        case 'male':
+            return 'Males only';
+        case 'Female':
+        case 'female':
+            return 'Females only';
+        default:
+            return 'Any gender';
+    }
 }
 
 
