@@ -181,18 +181,29 @@ function initializeCallback() {
     console.log("processed data inside initialize: " + processedData);
     var features = map.data.addGeoJson(processedData);
     var myLatlng;
-
-    for (var i = 0; i < features.length; i++) {
+    //for (var l = 0; l < features.length; l++) {
+    for (var l = 0; l < 200; l++) {
         //console.log(features[i]);
-        myLatlng = features[i].getGeometry().get();
-        //console.log(features[i].A.price);
+        myLatlng = features[l].getGeometry().get();
+        //console.log(features[l].A.price);
+        for (var k = l-1; k > 0; k--) {
+            var thisLatlng = features[k].getGeometry().get();
+            console.log("compare ",  thisLatlng, " and ", myLatlng, ": ", (thisLatlng.equals(myLatlng)));
+            if (thisLatlng.equals(myLatlng)) {
+                console.log("Offset activated");
+                //update the position of the coincident marker by applying a small multipler to its coordinates
+                var newLat = myLatlng.lat() + (Math.random() - .5) / 1500;// * (Math.random() * (max - min) + min);
+                var newLng = myLatlng.lng() + (Math.random() - .5) / 1500;// * (Math.random() * (max - min) + min);
+                myLatlng = new google.maps.LatLng(newLat, newLng);
+            }
+        }
         overlay = new CustomMarker(
             myLatlng,
             map,
             {
-                marker_id: features[i].A.weight.toString(),
-                text: "$" + features[i].A.price.toString(),
-                number: features[i].A.weight.toString(),
+                marker_id: features[l].A.weight.toString(),
+                text: "$" + features[l].A.price.toString(),
+                number: features[l].A.weight.toString(),
                 point: 'markerPoint'
             }
         );
@@ -424,7 +435,7 @@ $('document').ready(function(){
     console.log('Document is ready!');
     $('.js-housing').on('mouseenter', '.accordion-group', function() {
             var weight = $(this).attr('class').split('js-listing-')[1];
-            console.log('Hover on ', weight);
+            //console.log('Hover on ', weight);
             $('.js-listing-' + weight).addClass('listing-hover');
         });
     $('.js-housing').on('mouseleave', '.accordion-group', function(){
