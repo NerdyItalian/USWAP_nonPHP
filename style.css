@@ -22,13 +22,13 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 12px;
 }
 .markerPrice {
-    display: inline-block;
+    display: inline;
     float: right;
     padding: 2px 4px 2px 8px;
     background-color: blue;
 }
 .markerNumber {
-    display: inline-block;
+    display: inline;
     float: left;
     background-color: green;
     padding: 2px 4px 2px 4px;
