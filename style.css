@@ -31,3 +31,39 @@
     height: 600px;
     overflow: scroll;
 }
+
+.marker {
+    position: absolute;
+    cursor: pointer;
+    width: auto;
+    height: auto;
+    padding: 0;
+    color: white;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    font-stretch: normal;
+    font-size: 16px;
+    line-height: normal;
+    font-family: Helvetica, Arial, sans-serif;
+}
+.markerPrice {
+    display: inline-block;
+    float: right;
+    padding: 2px 4px 2px 4px;
+    background-color: blue;
+}
+.markerNumber {
+    display: inline-block;
+    float: left;
+    background-color: green;
+    padding: 2px 4px 2px 4px;
+}
+.markerPoint {
+    display: block;
+    text-align: center;
+}
+.markerPoint img {
+    height: 10px;
+    vertical-align: top;
+}
