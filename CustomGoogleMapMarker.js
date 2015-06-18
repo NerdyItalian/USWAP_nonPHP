@@ -45,6 +45,8 @@ CustomMarker.prototype.draw = function() {
 		// this is setting the class and styles of the overlay div.
 		div.className = 'marker';
 
+		$(div).addClass('js-listing-' + this.args.marker_id);
+
 		// this is styling the div, but I want to find a way to style the text inside of the div. I'm still working on that.
 		//div.style.position = 'absolute';
 		//div.style.cursor = 'pointer';
@@ -65,6 +67,17 @@ CustomMarker.prototype.draw = function() {
 		google.maps.event.addDomListener(div, "click", function(event) {
 			alert('You clicked on a custom marker!');			
 			google.maps.event.trigger(self, "click");
+		});
+
+		google.maps.event.addDomListener(div, 'mouseover', function(event){
+			var id = $(this).attr('class').split('js-listing-')[1];
+			$('.js-listing-' + id).addClass('listing-hover');
+			google.maps.event.trigger(self, 'mouseover');
+		});
+
+		google.maps.event.addDomListener(div, 'mouseout', function(event){
+			$('.listing-hover').removeClass('listing-hover');
+			google.maps.event.trigger(self, 'mouseout');
 		});
 
 		//I have no idea what this is doing.

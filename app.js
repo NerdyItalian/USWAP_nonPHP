@@ -183,9 +183,9 @@ function initializeCallback() {
     var myLatlng;
 
     for (var i = 0; i < features.length; i++) {
-        console.log(features[i]);
+        //console.log(features[i]);
         myLatlng = features[i].getGeometry().get();
-        console.log(features[i].A.price);
+        //console.log(features[i].A.price);
         overlay = new CustomMarker(
             myLatlng,
             map,
@@ -197,7 +197,7 @@ function initializeCallback() {
             }
         );
         markers.push(overlay);
-        console.log("overlay set: ", overlay);
+        //console.log("overlay set: ", overlay);
     }
 
     var markerCluster = new MarkerClusterer(map, markers);
@@ -312,7 +312,7 @@ function displayListings(data) {
  */
 
 function displaySublease(listing, index) {
-    var $container = $('<div class="accordion-group">');
+    var $container = $('<div class="accordion-group js-listing-' + listing.weight + '">');
     var $wrapper = $('<div class="accordion-heading clearfix">');
 
     var $div = $('<div class="clearfix listing-info">');
@@ -345,7 +345,7 @@ function displaySublease(listing, index) {
 }
 
 function displayPromo(listing, index) {
-    var $container = $('<div class="accordion-group affiliate">');
+    var $container = $('<div class="accordion-group affiliate js-listing-' + listing.weight + '">');
     var $wrapper = $('<div class="accordion-heading clearfix">');
 
     var $header = $('<div class="clearfix listing-info">');
@@ -419,3 +419,15 @@ function formatGender(gender) {
 
 
 getData(processData, initializeCallback);
+
+$('document').ready(function(){
+    console.log('Document is ready!');
+    $('.js-housing').on('mouseenter', '.accordion-group', function() {
+            var weight = $(this).attr('class').split('js-listing-')[1];
+            console.log('Hover on ', weight);
+            $('.js-listing-' + weight).addClass('listing-hover');
+        });
+    $('.js-housing').on('mouseleave', '.accordion-group', function(){
+            $('.listing-hover').removeClass('listing-hover');
+    });
+});
