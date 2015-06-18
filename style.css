@@ -19,18 +19,12 @@ h1, h2, h3, h4, h5, h6 {
     height: auto;
     padding: 0;
     color: white;
-    font-style: normal;
-    font-variant: normal;
-    font-weight: normal;
-    font-stretch: normal;
-    font-size: 16px;
-    line-height: normal;
-    font-family: Helvetica, Arial, sans-serif;
+    font-size: 12px;
 }
 .markerPrice {
     display: inline-block;
     float: right;
-    padding: 2px 4px 2px 4px;
+    padding: 2px 4px 2px 8px;
     background-color: blue;
 }
 .markerNumber {

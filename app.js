@@ -190,7 +190,7 @@ function initializeCallback() {
             myLatlng,
             map,
             {
-                marker_id: '123',
+                marker_id: features[i].A.weight.toString(),
                 text: "$" + features[i].A.price.toString(),
                 number: features[i].A.weight.toString(),
                 point: 'markerPoint'
