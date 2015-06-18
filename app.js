@@ -282,18 +282,34 @@ function displayListings(data) {
 
 function displaySublease(listing, index) {
     var $container = $('<div class="accordion-group">');
-    var $image = $('<img class="listing-image" src="' + listing.image + '">');
-    var $title = $('<h3 class="listing-sublease-title">Sublease</h3>');
-    var $linkWrapper = $('<a class="accordion-toggle" data-parent="#js-listings" data-toggle="collapse" href="#js-listing-' + index + '">');
-    var $wrapper = $('<header class="accordion-heading clearfix">');
-    $linkWrapper.append($image);
-    $linkWrapper.append($title);
-    $wrapper.append($linkWrapper);
-    var $details = $('<div>');
-    $details.append('<h4 class="listing-price">$' + listing.price + '+</h4>');
-    $details.append('<p class="bed-bath-sub field">' + listing.beds + " bedrooms | " + listing.baths + ' baths</div>');
-    $wrapper.append($details);
+    var $wrapper = $('<div class="accordion-heading clearfix">');
+
+    var $div = $('<div class="clearfix listing-info">');
+    var $header = $('<div class="clearfix">');
+    var $footer = $('<div class="clearfix">');
+
+    var $title = $('<h3 class="listing-sublease-title">' + listing.name + '</h3>');
+    var $price = $('<h3 class="listing-price">$' + listing.price + '+</h4>');
+    var $details = $('<div class="listing-sublease-details"><p>' + listing.beds + ' beds | ' + listing.baths + ' baths</p></div>');
+    var $button = $('<a href="' + listing.url + '" target="_blank"><button class="btn btn-default btn-sublease">View Details</button></a>');
+
+    $header.append($title);
+    $header.append($price);
+    $footer.append($details);
+    $footer.append($button);
+
+    $div.append($header);
+    $div.append($footer);
+
+    var $image = $('<div class="listing-image"><img class="listing-image" src="' + listing.image + '"></div>');
+    var $link = $('<div class="listing-wrapper">');
+    $link.append($image);
+    $link.append($div);
+
+    $wrapper.append($link);
+
     $container.append($wrapper);
+
     return $container;
 }
 
@@ -306,7 +322,7 @@ function displayPromo(listing, index) {
 
     var $title = $('<h3 class="listing-promo-title">' + listing.name + '</h3>');
     var $price = $('<h3 class="listing-price">$' + listing.price + '+</h4>');
-    var $floors = $('<div class="listing-promo-floors"><p>Click to view ' + listing.floor_plans.length + ' floor plans</p></div>');
+    var $floors = $('<div class="listing-promo-details"><button class="btn btn-success">' + listing.floor_plans.length + ' floor plans available</button></div>');
 
     $div.append($title);
     $div.append($price);
@@ -342,7 +358,7 @@ function displayAccordionItems(listings, index) {
     for (i=0; i<listings.length; i++) {
         $listing = $('<div class="accordion-inner clearfix">');
         $listing.append('<div class="pull-left"><h4>' + listings[i].name + '</h4><p>' + listings[i].beds + ' beds | ' + listings[i].baths + ' baths</p></div>');
-        $listing.append('<div class="pull-right"><h4>$' + listings[i].price + '+</h4>' + '<button class="btn btn-info">View details</button></div>');
+        $listing.append('<div class="pull-right"><h4>$' + listings[i].price + '+</h4><a href="' + listings[i].url + '" target="_blank"' + '<button class="btn btn-success">View details</button></a></div>');
         $container.append($listing);
     }
     return $container;
