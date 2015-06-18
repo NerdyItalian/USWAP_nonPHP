@@ -43,7 +43,9 @@ function processData(data) {
         "type": "FeatureCollection",
         "features": []
     };
-    for (var i=0; i < data.length; i++) {
+
+    var i;
+    for (i=0; i < data.length; i++) {
         var result = data[i];
 
         // Only process the data if the result listing is currently active
@@ -57,35 +59,31 @@ function processData(data) {
             // Get the index of a listing if there are other promotional listings already present with the same buildid
             var listingIndex = getOtherListings(result.buildid, geoJsonObject["features"]);
 
-            // If a listing index is found (i.e. buildid is present in list) and the result we're processing is not a
-            // sublease, add it to the "additional" property of the object at the listing index -- so that one contains others
+            /**
+             * Process object into GeoJSON
+             * Subleases get their own entry in "features."
+             * Promos are sorted into building groups by buildid.
+             *
+             * GeoJSON is a format used by Google Maps and probably other mapping APIs. It has a strict format but we can put
+             * whatever we want into "properties", which is where we put things like the listing name, price, and associated URL.
+             *
+             * Note: This is ONE GeoJSON object, not many, and we push each listing into its "features" property.
+             */
+
             if (listingIndex != null && !isSublease(result["aid"])) {
-                geoJsonObject["features"][listingIndex].properties["additional"].push({
-                    "name": getName(result["aid"], result["list"]),
+                geoJsonObject["features"][listingIndex].properties["floor_plans"].push({
+                    "weight": i + 1,
+                    "name": result["list"].split(" at ")[0],
                     "buildid": result["buildid"],
                     "price": result["price"],
+                    "gender": result["gender"],
                     "description": result["body"],
                     "baths": result["baths"],
                     "beds": result["beds"],
-                    "sublease": isSublease(result["aid"]),
+                    "sublease": false,
                     "url": result["url"]
                 });
-            }
-
-            else {
-                /**
-                 * Process object into GeoJSON
-                 * If no listing index is found, or if something is a sublease, then it gets its own entry in "features"
-                 * (i.e. will be processed as a single point on the map and displayed as its own result in the accordion list).
-                 *
-                 * GeoJSON is a format used by Google Maps and probably other mapping APIs. It has a strict format but we can put
-                 * whatever we want into "properties", which is where we put things like the listing name, price, and associated URL.
-                 *
-                 * For promotional listings: "additional" holds an array of objects that are other listings in the same building.
-                 *
-                 * Note: This is ONE GeoJSON object, not many, and we push each listing into its "features" property.
-                 */
-
+            } else if (listingIndex == null && !isSublease(result["aid"])) {
                 geoJsonObject["features"].push(
                     {
                         "type": "Feature",
@@ -95,21 +93,67 @@ function processData(data) {
                         },
                         "properties": {
                             "weight": i + 1,
-                            "name": getName(result["aid"], result["list"]),
+                            // Gets the building name, assuming "Cordelia at Brentwood" etc
+                            "name": result["list"].split(" at ")[1],
                             "buildid": result["buildid"],
+                            "image": getThumbnail(result["images"]),
+                            "sublease": false,
+                            "url": result["url"],
+                            "floor_plans": [{
+                                "name": result["list"].split(" at ")[0],
+                                "number": i,
+                                "buildid": result["buildid"],
+                                "price": result["price"],
+                                "gender": result["gender"],
+                                "description": result["body"],
+                                "baths": result["baths"],
+                                "beds": result["beds"],
+                                "sublease": false,
+                                "url": result["url"]
+                            }]
+                        }
+                    }
+                );
+            } else {
+                geoJsonObject["features"].push(
+                    {
+                        "type": "Feature",
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": [parseFloat(result["lng"]), parseFloat(result["lat"])]
+                        },
+                        "properties": {
+                            "weight": i + 1,
+                            "name": "Sublease",
                             "price": result["price"],
+                            "gender": result["gender"],
                             "description": result["body"],
                             "baths": result["baths"],
                             "beds": result["beds"],
                             "image": getThumbnail(result["images"]),
-                            "sublease": isSublease(result["aid"]),
-                            "url": result["url"],
-                            "additional": []
+                            "sublease": true,
+                            "url": result["url"]
                         }
                     }
                 );
             }
-            console.log("geoJsonObject:", geoJsonObject);
+        }
+    }
+
+    // Before saving data: Loop through once more for promotional buildings and get the lowest price of each
+    // We'll use this to display the lowest listing price on the DOM
+
+    for (i=0; i<geoJsonObject.features.length; i++) {
+        var listing = geoJsonObject.features[i].properties;
+        var j, price, lowestPrice;
+        if (listing.floor_plans) {
+            for (j=0; j<listing.floor_plans.length; j++) {
+                price = listing.floor_plans[j].price;
+                if (!lowestPrice || price < lowestPrice) {
+                    lowestPrice = price;
+                }
+            }
+            listing.price = lowestPrice;
         }
     }
 
@@ -126,6 +170,7 @@ function processData(data) {
  */
 
 function initializeCallback() {
+    console.log("Initialize was called");
     var mapOptions = {
         center: { lat: 44.9747, lng: -93.2354},
         zoom: 12
@@ -222,9 +267,7 @@ function getName(aid, list) {
 function getOtherListings(id, array) {
     var i;
     for (i=0; i<array.length; i++) {
-        //console.log("Checking if ", array[i].properties["buildid"], "is equal to ", id);
         if (array[i].properties["buildid"] == id && !array[i].properties["sublease"]) {
-            //console.log("It's equal");
             return i;
         }
     }
@@ -237,17 +280,15 @@ function getOtherListings(id, array) {
 function displayListings(data) {
     // Target the housing container already present in index.html
     var $housing = $('.js-housing');
-    var i;
+    var $container, i;
     // Loop through each listing
     for (i=0; i<data.length; i++) {
         var listing = data[i].properties;
         // Creates a basic listing
-        var $container = displayListItem(listing, i);
-        // If there are additional properties nested inside the listing, loop through those and add them to the basic
-        // listing -- initially, they will be hidden
-        if (listing.additional.length > 0) {
-            $container.find('.accordion-heading').append('<p><em>Click to view ' + listing.additional.length + ' additional floor plans</em></p>');
-            $container.append(displayAccordionItems(listing.additional, i));
+        if (listing.sublease) {
+            $container = displaySublease(listing, i);
+        } else {
+            $container = displayPromo(listing, i);
         }
         // Add the listing to the DOM
         $housing.append($container);
@@ -265,17 +306,66 @@ function displayListings(data) {
  * @returns {*|jQuery|HTMLElement}: Real estate listing formatted for display on the DOM (but not yet appended)
  */
 
-function displayListItem(listing, index) {
+function displaySublease(listing, index) {
     var $container = $('<div class="accordion-group">');
-    if (!listing.sublease) {
-        $container.addClass('affiliate');
-    }
-    var $firstListing = $('<header class="accordion-heading clearfix"><a class="accordion-toggle" data-parent="#js-listings" data-toggle="collapse" href="#js-listing-' + index + '"><img class="img-polaroid cover-image-sm pull-left" src="' + listing.image + '"><h3 class="title">' + listing.name + '</a></h3></header>');
-    var $floated = $('<div class="clearfix"><div class="fields"></div></div>');
-    $floated.append('<div class="price-wrapper field"><h4 class="price">$' + listing.price + '+</h4></div>');
-    $floated.append('<div class="bed-bath-sub field">' + listing.beds + " bedrooms | " + listing.baths + ' baths</div>');
-    $firstListing.append($floated);
-    $container.append($firstListing);
+    var $wrapper = $('<div class="accordion-heading clearfix">');
+
+    var $div = $('<div class="clearfix listing-info">');
+    var $header = $('<div class="clearfix">');
+    var $footer = $('<div class="clearfix">');
+
+    var $title = $('<h3 class="listing-sublease-title">' + listing.name + '</h3>');
+    var $price = $('<h3 class="listing-price">$' + listing.price + '+</h4>');
+    var $details = $('<div class="listing-sublease-details"><p>' + formatPlural(listing.beds, 'bed', 'beds') + ' | ' + formatPlural(listing.baths, 'bath', 'baths') + ' | ' + formatGender(listing.gender) + '</p></div>');
+    var $button = $('<a href="' + listing.url + '" target="_blank"><button class="btn btn-default btn-sublease">View Details</button></a>');
+
+    $header.append($title);
+    $header.append($price);
+    $footer.append($details);
+    $footer.append($button);
+
+    $div.append($header);
+    $div.append($footer);
+
+    var $image = $('<div class="listing-image"><img class="listing-image" src="' + listing.image + '"></div>');
+    var $link = $('<div class="listing-wrapper">');
+    $link.append($image);
+    $link.append($div);
+
+    $wrapper.append($link);
+
+    $container.append($wrapper);
+
+    return $container;
+}
+
+function displayPromo(listing, index) {
+    var $container = $('<div class="accordion-group affiliate">');
+    var $wrapper = $('<div class="accordion-heading clearfix">');
+
+    var $header = $('<div class="clearfix listing-info">');
+    var $div = $('<div class="clearfix">');
+
+    var $title = $('<h3 class="listing-promo-title">' + listing.name + '</h3>');
+    var $price = $('<h3 class="listing-price">$' + listing.price + '+</h4>');
+    var $floors = $('<div class="listing-promo-details"><button class="btn btn-success">' + listing.floor_plans.length + ' floor plans available</button></div>');
+
+    $div.append($title);
+    $div.append($price);
+    $header.append($div);
+    $header.append($floors);
+
+    var $image = $('<div class="listing-image"><img class="listing-image" src="' + listing.image + '"></div>');
+    var $link = $('<a class="accordion-toggle" data-parent="#js-listings" data-toggle="collapse" href="#js-listing-' + index + '">');
+    $link.append($image);
+    $link.append($header);
+
+    $wrapper.append($link);
+
+    $container.append('<div class="listing-promo-tag"><p>$$ Eligible for $100 cashback reward! $$</p></div>');
+    $container.append($wrapper);
+    $container.append(displayAccordionItems(listing.floor_plans, index));
+
     return $container;
 }
 
@@ -293,11 +383,33 @@ function displayAccordionItems(listings, index) {
 
     for (i=0; i<listings.length; i++) {
         $listing = $('<div class="accordion-inner clearfix">');
-        $listing.append('<div class="pull-left"><h4>' + listings[i].name + '</h4><p>' + listings[i].beds + ' beds, ' + listings[i].baths + ' baths</p></div>');
-        $listing.append('<div class="pull-right"><h4>$' + listings[i].price + '+</h4>' + '<button class="btn btn-info">View details</button></div>');
+        $listing.append('<div class="pull-left"><h4>' + listings[i].name + '</h4><p>' + formatPlural(listings[i].beds, 'bed', 'beds') + ' | ' + formatPlural(listings[i].baths, 'bath', 'baths') + ' | ' + formatGender(listings[i].gender) + '</p></div>');
+        $listing.append('<div class="pull-right"><h4>$' + listings[i].price + '+</h4><a href="' + listings[i].url + '" target="_blank"' + '<button class="btn btn-success">View details</button></a></div>');
         $container.append($listing);
     }
     return $container;
+}
+
+// Utility display functions used by the result display
+function formatPlural(number, singular, plural) {
+    if (number == 1) {
+        return '1 ' + singular;
+    } else {
+        return number + ' ' + plural;
+    }
+}
+
+function formatGender(gender) {
+    switch(gender) {
+        case 'Male':
+        case 'male':
+            return 'Males only';
+        case 'Female':
+        case 'female':
+            return 'Females only';
+        default:
+            return 'Any gender';
+    }
 }
 
 

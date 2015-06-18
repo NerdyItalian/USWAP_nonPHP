@@ -1,36 +1,16 @@
-/* Accordion & listing CSS */
-.accordion-group {
-    background-color: #f5f5f5;
+/* Hacky font fix -- remove when on main site! */
+@import url(http://fonts.googleapis.com/css?family=Lato:300,400,700);
+
+body {
+    font-family: Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-.accordion-heading a {
+h1, h2, h3, h4, h5, h6 {
+    font-family: Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: 300;
-    color: #000;
 }
 
-.cover-image-sm {
-    width: 15%;
-}
-
-.affiliate {
-    background: #9ec784 linear-gradient(to bottom, #9ec784, #86ba6b);
-    border: 1px solid #608945;
-}
-
-.accordion-inner {
-    border-top: 1px solid #608945;
-}
-
-.width-33 {
-    width: 33%;
-    box-sizing: border-box;
-    padding: 5px;
-}
-
-.js-housing {
-    height: 600px;
-    overflow: scroll;
-}
+/*      Map Marker CSS      */
 
 .marker {
     position: absolute;
@@ -66,4 +46,105 @@
 .markerPoint img {
     height: 10px;
     vertical-align: top;
+}
+
+/* Accordion & listing CSS */
+.accordion-group {
+    background-color: #f5f5f5;
+}
+
+.accordion-heading a {
+    font-weight: 300;
+    color: #000;
+}
+
+.affiliate {
+    background: #9ec784 linear-gradient(to bottom, #9ec784, #86ba6b);
+    border: 1px solid #608945;
+}
+
+.accordion-inner {
+    border-top: 1px solid #608945;
+}
+
+.width-33 {
+    width: 33%;
+    box-sizing: border-box;
+    padding: 5px;
+}
+
+.js-housing {
+    height: 600px;
+    overflow: scroll;
+}
+
+.listing-wrapper {
+    display: block;
+    padding: 8px 15px;
+}
+
+.listing-promo-title {
+    float: left;
+    font-weight: 300;
+    font-size: 1.3rem;
+    margin: 0 .75rem;
+}
+
+.listing-promo-tag {
+    text-align: center;
+    background: #608945;
+    border: 1px solid #9ec784;
+    color: #b4ff84;
+    padding: .2rem;
+}
+
+.listing-promo-tag p {
+    margin: 0 10px 0;
+}
+
+.listing-promo-details {
+    float: right;
+    font-style: italic;
+}
+
+.listing-sublease-title {
+    float: left;
+    font-weight: 400;
+    font-size: 1rem;
+    margin: 0 .75rem;
+}
+
+.listing-sublease-details p {
+    float: left;
+    margin: 0 10px 12px;
+    font-weight: 400;
+}
+
+.listing-price {
+    float: right;
+    font-weight: 300;
+    margin: 0 .75rem;
+}
+
+.listing-image {
+    float: left;
+    width: 15%;
+    margin: 2px 0 8px;
+}
+
+.listing-image img {
+    border: 1px solid #608945;
+    width: 4rem;
+    max-height: 4rem;
+}
+
+.listing-info {
+    float: left;
+    width: 85%;
+}
+
+.btn-sublease {
+    float: right;
+    padding: 2px 6px;
+    font-size: 12px;
 }
