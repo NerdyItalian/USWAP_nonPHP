@@ -177,6 +177,7 @@ function initializeCallback() {
     };
     var map = new google.maps.Map(document.getElementById('map-canvas'),
         mapOptions);
+    var markers = [];
     console.log("processed data inside initialize: " + processedData);
     var features = map.data.addGeoJson(processedData);
     var myLatlng;
@@ -195,13 +196,17 @@ function initializeCallback() {
                 point: 'markerPoint'
             }
         );
+        markers.push(overlay);
         console.log("overlay set: ", overlay);
     }
+
+    var markerCluster = new MarkerClusterer(map, markers);
+
     /**
      * Set style decides whether the pin on the map should be green or red for each feature based on if it's a sublease
      * Loop through features in map.data -- the "features" property of GeoJSON, aka each listing in our housing results
      */
-//Transparent icon for potential use later: http://maps.gstatic.com/mapfiles/markers2/dd-via-transparent.png
+    //Transparent icon for potential use later: http://maps.gstatic.com/mapfiles/markers2/dd-via-transparent.png
     map.data.setStyle(function(feature) {
         var placeName = feature.getProperty('name');
         if (feature.getProperty('sublease')) {
