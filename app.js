@@ -222,14 +222,14 @@ function initializeCallback() {
         var placeName = feature.getProperty('name');
         if (feature.getProperty('sublease')) {
             return {
-                icon: "http://maps.gstatic.com/mapfiles/markers2/measle.png",
+                icon: "http://maps.gstatic.com/mapfiles/markers2/dd-via-transparent.png",
                 visible: true,
                 clickable: true,
                 title: placeName
             };
         } else {
             return {
-                icon: "http://maps.gstatic.com/mapfiles/markers2/measle_blue.png",
+                icon: "http://maps.gstatic.com/mapfiles/markers2/dd-via-transparent.png",
                 visible: true,
                 clickable: true,
                 title: placeName
