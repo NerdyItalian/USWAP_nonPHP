@@ -10,6 +10,37 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 300;
 }
 
+.filter-reward {
+    line-height: 30px;
+}
+
+.navbar .brand {
+    font-family: Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.navbar .divider-vertical {
+    font-family: Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    height: 40px;
+    margin: 5px 10px 0 15px;
+    border-left: 1px solid #f2f2f2;
+    border-right: 1px solid #ffffff;
+}
+
+.navbar .nav {
+    font-family: Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    position: relative;
+    left: 0;
+    display: block;
+    float: left;
+    margin: 5px;
+}
+
+.navbar-inner {
+    padding-left: 80px;
+}
+
+
+
 /*      Map Marker CSS      */
 
 .marker {
