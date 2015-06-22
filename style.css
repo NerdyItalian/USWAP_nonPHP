@@ -10,6 +10,37 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 300;
 }
 
+.filter-reward {
+    line-height: 30px;
+}
+
+.navbar .brand {
+    font-family: Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.navbar .divider-vertical {
+    font-family: Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    height: 40px;
+    margin: 5px 10px 0 15px;
+    border-left: 1px solid #f2f2f2;
+    border-right: 1px solid #ffffff;
+}
+
+.navbar .nav {
+    font-family: Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    position: relative;
+    left: 0;
+    display: block;
+    float: left;
+    margin: 5px;
+}
+
+.navbar-inner {
+    padding-left: 80px;
+}
+
+
+
 /*      Map Marker CSS      */
 
 .marker {
@@ -21,26 +52,34 @@ h1, h2, h3, h4, h5, h6 {
     color: white;
     font-size: 12px;
 }
+.markerHighlight {
+    background-color: #1694b1;
+    padding: 0 1px 0 1px;
+}
 .markerPrice {
     display: inline;
-    float: right;
+    margin: 0 auto 0 0;
     padding: 2px 4px 2px 8px;
-    background-color: blue;
+    background-color: #1694b1;
 }
 .markerNumber {
     display: inline;
-    float: left;
-    background-color: green;
+    margin: 0 0 0 auto;
+    color: #2A7F93;
+    background-color: #5ac0d9;
     padding: 2px 4px 2px 4px;
 }
 .markerPoint {
     display: block;
     text-align: center;
+    margin: 0 auto 0 auto;
+    line-height: 100%;
 }
 .markerPoint img {
-    height: 10px;
+    height: 12px;
     vertical-align: top;
 }
+
 
 /* Accordion & listing CSS */
 .accordion-group {
