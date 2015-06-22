@@ -23,13 +23,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 .markerPrice {
     display: inline;
-    float: right;
+    margin: 0 auto 0 0;
     padding: 2px 4px 2px 8px;
     background-color: blue;
 }
 .markerNumber {
     display: inline;
-    float: left;
+    margin: 0 0 0 auto;
     background-color: green;
     padding: 2px 4px 2px 4px;
 }

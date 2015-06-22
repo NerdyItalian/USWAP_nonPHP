@@ -38,8 +38,8 @@ CustomMarker.prototype.draw = function() {
 		divNum.appendChild(number);
 		divText.appendChild(text);
 		divPoint.appendChild(pointImg);
-		div.appendChild(divText);
 		div.appendChild(divNum);
+		div.appendChild(divText);
 		div.appendChild(divPoint);
 
 		// this is setting the class and styles of the overlay div.
