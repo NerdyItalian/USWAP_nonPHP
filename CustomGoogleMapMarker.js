@@ -24,22 +24,25 @@ CustomMarker.prototype.draw = function() {
 		//this is the part I wrote that creates the text inside of the overlay div and appends it to it's parent div
 		var divText = document.createElement('div');
 		var divNum = document.createElement('div');
+		var highlightDiv = document.createElement('div');
 		var divPoint = document.createElement('div');
 		var number = document.createTextNode(self.args.number);
 		var text = document.createTextNode(self.args.text); //creating the text node as an argument that is passed in from the object
 
 		var pointImg = document.createElement('img');
-		pointImg.src = 'test-point.png'; //this is a fixed image, if we have different colors for promoted vs sublease, we will need two image options.
+		pointImg.src = 'sublease-pointer.png'; //this is a fixed image, if we have different colors for promoted vs sublease, we will need two image options.
 
 		divText.className = 'markerPrice'; //give classes to internal divs
 		divNum.className = 'markerNumber';
 		divPoint.className = self.args.point; //I have this as a variable so that we can give different classes based on whether a listing is 'promoted'. ie 'if (listing) == promoted, then {give promoted class}
+		highlightDiv.className = 'markerHighlight';
 
 		divNum.appendChild(number);
 		divText.appendChild(text);
 		divPoint.appendChild(pointImg);
-		div.appendChild(divNum);
-		div.appendChild(divText);
+		highlightDiv.appendChild(divNum);
+		highlightDiv.appendChild(divText);
+		div.appendChild(highlightDiv);
 		div.appendChild(divPoint);
 
 		// this is setting the class and styles of the overlay div.
