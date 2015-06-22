@@ -211,7 +211,7 @@ function initializeCallback() {
         //console.log("overlay set: ", overlay);
     }
 
-    var markerCluster = new MarkerClusterer(map, markers);
+    var markerCluster = new MarkerClusterer(map, markers, {maxZoom: 17});
 
     /**
      * Set style decides whether the pin on the map should be green or red for each feature based on if it's a sublease
