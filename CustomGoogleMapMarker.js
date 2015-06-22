@@ -72,6 +72,7 @@ CustomMarker.prototype.draw = function() {
 		google.maps.event.addDomListener(div, 'mouseover', function(event){
 			var id = $(this).attr('class').split('js-listing-')[1];
 			$('.js-listing-' + id).addClass('listing-hover');
+			$('.js-housing').scrollTo($('.js-listing-' + id), 100);
 			google.maps.event.trigger(self, 'mouseover');
 		});
 

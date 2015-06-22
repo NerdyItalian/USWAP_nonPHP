@@ -12,7 +12,7 @@ function getData(callback, initialize) {
     $.ajax({
         type: 'GET',
         dataType: 'json',
-        url: 'correctedJSON.json',
+        url:  'correctedJSON.json',
         success: function(data, textstatus) {
             console.log(data);
             // Process the data
@@ -188,7 +188,7 @@ function initializeCallback() {
         //console.log(features[l].A.price);
         for (var k = l-1; k > 0; k--) {
             var thisLatlng = features[k].getGeometry().get();
-            console.log("compare ",  thisLatlng, " and ", myLatlng, ": ", (thisLatlng.equals(myLatlng)));
+            //console.log("compare ",  thisLatlng, " and ", myLatlng, ": ", (thisLatlng.equals(myLatlng)));
             if (thisLatlng.equals(myLatlng)) {
                 console.log("Offset activated");
                 //update the position of the coincident marker by applying a small multipler to its coordinates
@@ -442,3 +442,4 @@ $('document').ready(function(){
             $('.listing-hover').removeClass('listing-hover');
     });
 });
+
