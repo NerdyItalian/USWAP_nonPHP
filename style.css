@@ -52,6 +52,11 @@ h1, h2, h3, h4, h5, h6 {
     color: white;
     font-size: 12px;
 }
+
+.marker:hover {
+    z-index: 555555;
+}
+
 .markerHighlight {
     background-color: #1694b1;
     padding: 0 1px 0 1px;
@@ -188,6 +193,13 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Applied to both the map marker and listing on hover */
 
-.listing-hover {
-    border: 3px hotpink solid;
+/* Hi Tracy! The hover outline behavior was starting to get really annoying so I (Rom) did some temporary styling. The first CSS rule affects the listing on the left and the second one affects the marker itself. Please change this at your leisure, we were just tired of the pink outline. No styling for affiliates, either. */
+
+.accordion-group.listing-hover {
+    background-color: #cbe5e8;
+    border: 1px solid #4d8493;
+}
+
+.listing-hover .markerPrice {
+    background-color: #5ac0d9;
 }
