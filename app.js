@@ -7,12 +7,17 @@ var processedData;
  *
  * @param callback: The function that we call after: processData()
  * @param initialize: The function that configures the map: initializeCallback() (called -after- callback)
+ * @param options: Things that we filter in by
  */
-function getData(callback, initialize) {
+function getData(callback, initialize, options) {
+    var opts = options || {gender: '', beds: '', baths: '', price: ''};
+    var ajaxUrl = 'http://umn.u-swap.org/api/v1/housing?gender=' + opts.gender + '&beds=' + opts.beds + '&baths=' + opts.baths + '&price=' + opts.price;
+    // http://umn.u-swap.org/housing/search w/ named form inputs will redirect to the actual site
+    console.log('Calling url:', ajaxUrl);
     $.ajax({
         type: 'POST',
         dataType: 'json',
-        url:  'http://umn.u-swap.org/api/v1/housing',
+        url:  ajaxUrl,
         success: function(data, textstatus) {
             console.log(data);
             // Process the data
@@ -295,6 +300,7 @@ function getOtherListings(id, array) {
 function displayListings(data) {
     // Target the housing container already present in index.html
     var $housing = $('.js-housing');
+    //$housing.empty();
     var $container, i;
     // Loop through each listing
     for (i=0; i<data.length; i++) {
@@ -439,6 +445,19 @@ $('document').ready(function(){
         });
     $('.js-housing').on('mouseleave', '.accordion-group', function(){
             $('.listing-hover').removeClass('listing-hover');
+    });
+    //$('.js-filter').submit(function(event) {
+    //    event.preventDefault();
+    //});
+    $('.js-filter-btn').on('click', function(){
+        var options = {};
+        options.beds = $('.js-filter-beds').val() || '';
+        options.baths = $('.js-filter-baths').val() || '';
+        options.gender = $('.js-filter-gender').val() || '';
+        options.price = $('.js-filter-price').val() || '';
+        console.log(options);
+
+        //getData(processData, initializeCallback, options);
     });
 });
 

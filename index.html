@@ -34,46 +34,46 @@
         <div class="row">
             <div class="span12">
                 <div class="navbar">
-                    <form class="form-inline">
+                    <form class="form-inline js-filter">
                         <div class="navbar-inner">
                             <ul class="nav">
                                 <!--<a class="brand">Filter by:</a>-->
                                 <li class="divider-vertical">
-                                    <input type="text" class="input-medium" placeholder="Max Price">
+                                    <input type="text" class="input-medium js-filter-price" placeholder="Max Price" name="price">
                                 </li>
                                 <li class="divider-vertical">
-                                    <select class="input-medium">
-                                        <option value="" disabled selected>Min Bed</option>
-                                        <option> 1 </option>
-                                        <option> 2 </option>
-                                        <option> 3 </option>
-                                        <option> 4 </option>
-                                        <option> 5 </option>
-                                        <option> 6 </option>
+                                    <select class="input-medium js-filter-beds" name="beds">
+                                        <option value='' disabled selected>Min Beds</option>
+                                        <option value="1"> 1 </option>
+                                        <option value="2"> 2 </option>
+                                        <option value="3"> 3 </option>
+                                        <option value="4"> 4 </option>
+                                        <option value="5"> 5 </option>
+                                        <option value="6"> 6 </option>
                                     </select>
                                 </li>
                                 <li class="divider-vertical">
-                                    <select class="input-medium">
-                                        <option value="" disabled selected>Min Bath</option>
-                                        <option> 1 </option>
-                                        <option> 2 </option>
-                                        <option> 3 </option>
+                                    <select class="input-medium js-filter-baths" name="baths">
+                                        <option value="" disabled selected>Min Baths</option>
+                                        <option value="1"> 1 </option>
+                                        <option value="2"> 2 </option>
+                                        <option value="3"> 3 </option>
                                     </select>
                                 </li>
                                 <li class="divider-vertical">
-                                    <select class="input-medium">
+                                    <select class="input-medium js-filter-gender" name="gender">
                                         <option value="" disabled selected>Gender</option>
-                                        <option>Any</option>
-                                        <option>Male</option>
-                                        <option>Female</option>
+                                        <option value="">Any</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
                                     </select>
                                 </li>
                                 <li class="divider-vertical filter-reward">
                                     <label class="checkbox input-medium">
-                                        <input type="checkbox">$100 Reward
+                                        <input type="checkbox" class="js-filter-reward">$100 Reward
                                     </label>
                                 </li>
-                                <button type="submit" class="btn btn-success">GO!</button>
+                                <button type="submit" class="btn btn-success js-filter-btn">GO!</button>
                             </ul>
                         </div>
                     </form>
