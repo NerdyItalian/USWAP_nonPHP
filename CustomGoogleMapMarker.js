@@ -41,6 +41,8 @@ CustomMarker.prototype.draw = function() {
 			highlightDiv.className += ' promo-marker';
 			divNum.className += ' promo-marker';
 			divText.className += ' promo-marker';
+		} else {
+
 		}
 
 		divNum.appendChild(number);
