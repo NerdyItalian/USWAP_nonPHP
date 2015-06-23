@@ -10,10 +10,10 @@ var processedData;
  * @param options: Things that we filter in by
  */
 function getData(callback, initialize, options) {
-    //var opts = options || {};
-    var opts = {
-        max_price : '400' //these values can be pulled from the page URL here are placeholder arguments.  If an argument is not to be used, omit it from the array
-    };
+    var opts = options || {};
+    //var opts = {
+    //    max_price : '400' //these values can be pulled from the page URL here are placeholder arguments.  If an argument is not to be used, omit it from the array
+    //};
     $.ajax({
         type: 'POST',
         dataType: 'json',
@@ -288,7 +288,7 @@ function getOtherListings(id, array) {
 function displayListings(data) {
     // Target the housing container already present in index.html
     var $housing = $('.js-housing');
-    //$housing.empty();
+    $housing.empty();
     var $container, i;
     // Loop through each listing
     for (i=0; i<data.length; i++) {
@@ -296,8 +296,10 @@ function displayListings(data) {
         // Creates a basic listing
         if (listing.sublease) {
             $container = displaySublease(listing, i);
+            console.log('sublease listing');
         } else {
             $container = displayPromo(listing, i);
+            console.log('promo listing');
         }
         // Add the listing to the DOM
         $housing.append($container);
@@ -433,15 +435,18 @@ $('document').ready(function(){
     $('.js-housing').on('mouseleave', '.accordion-group', function(){
             $('.listing-hover').removeClass('listing-hover');
     });
-    //$('.js-filter').submit(function(event) {
-    //    event.preventDefault();
-    //});
+    $('.js-filter').submit(function(event) {
+        event.preventDefault();
+    });
     $('.js-filter-btn').on('click', function(){
         var options = {};
         options.min_bedrooms = $('.js-filter-beds').val() || '';
         options.min_bathrooms = $('.js-filter-baths').val() || '';
         options.gender = $('.js-filter-gender').val() || '';
         options.max_price = $('.js-filter-price').val() || '';
+        if ($('.js-filter-reward').is(':checked')) {
+            options.reward = 'Yes'
+        }
         console.log(options);
 
         getData(processData, initializeCallback, options);
