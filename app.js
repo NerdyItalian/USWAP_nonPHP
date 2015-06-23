@@ -10,15 +10,19 @@ var processedData;
  */
 function getData(callback, initialize) {
     $.ajax({
-        type: 'GET',
+        type: 'POST',
         dataType: 'json',
-        url:  'test.json',
+        url:  'http://umn.u-swap.org/api/v1/housing',
         success: function(data, textstatus) {
             console.log(data);
             // Process the data
             callback(data);
+
+            // Displays results in a list next to the map
+            displayListings(processedData.features);
+
             // Create the map
-            google.maps.event.addDomListener(window, 'load', initialize);
+            $(document).on('pageload', initialize());
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.log(textStatus, errorThrown);
@@ -77,7 +81,6 @@ function processData(data) {
                     "buildid": result["buildid"],
                     "price": result["price"],
                     "gender": result["gender"],
-                    "description": result["body"],
                     "baths": result["baths"],
                     "beds": result["beds"],
                     "sublease": false,
@@ -105,7 +108,6 @@ function processData(data) {
                                 "buildid": result["buildid"],
                                 "price": result["price"],
                                 "gender": result["gender"],
-                                "description": result["body"],
                                 "baths": result["baths"],
                                 "beds": result["beds"],
                                 "sublease": false,
@@ -127,7 +129,6 @@ function processData(data) {
                             "name": "Sublease",
                             "price": result["price"],
                             "gender": result["gender"],
-                            "description": result["body"],
                             "baths": result["baths"],
                             "beds": result["beds"],
                             "image": getThumbnail(result["images"]),
@@ -160,8 +161,6 @@ function processData(data) {
     // Save the geoJSON object globally
     processedData = geoJsonObject;
 
-    // Displays results in a list next to the map
-    displayListings(processedData.features);
 }
 
 /**
@@ -211,7 +210,7 @@ function initializeCallback() {
         //console.log("overlay set: ", overlay);
     }
 
-    var markerCluster = new MarkerClusterer(map, markers);
+    var markerCluster = new MarkerClusterer(map, markers, {maxZoom: 16});
 
     /**
      * Set style decides whether the pin on the map should be green or red for each feature based on if it's a sublease
