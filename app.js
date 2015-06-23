@@ -10,14 +10,15 @@ var processedData;
  * @param options: Things that we filter in by
  */
 function getData(callback, initialize, options) {
-    var opts = options || {gender: '', beds: '', baths: '', price: ''};
-    var ajaxUrl = 'http://umn.u-swap.org/api/v1/housing?gender=' + opts.gender + '&beds=' + opts.beds + '&baths=' + opts.baths + '&price=' + opts.price;
-    // http://umn.u-swap.org/housing/search w/ named form inputs will redirect to the actual site
-    console.log('Calling url:', ajaxUrl);
+    //var opts = options || {};
+    var opts = {
+        max_price : '400' //these values can be pulled from the page URL here are placeholder arguments.  If an argument is not to be used, omit it from the array
+    };
     $.ajax({
         type: 'POST',
         dataType: 'json',
-        url:  ajaxUrl,
+        data: opts,
+        url:  'http://umn.u-swap.org/api/v1/housing',
         success: function(data, textstatus) {
             console.log(data);
             // Process the data
@@ -451,13 +452,13 @@ $('document').ready(function(){
     //});
     $('.js-filter-btn').on('click', function(){
         var options = {};
-        options.beds = $('.js-filter-beds').val() || '';
-        options.baths = $('.js-filter-baths').val() || '';
+        options.min_bedrooms = $('.js-filter-beds').val() || '';
+        options.min_bathrooms = $('.js-filter-baths').val() || '';
         options.gender = $('.js-filter-gender').val() || '';
-        options.price = $('.js-filter-price').val() || '';
+        options.max_price = $('.js-filter-price').val() || '';
         console.log(options);
 
-        //getData(processData, initializeCallback, options);
+        getData(processData, initializeCallback, options);
     });
 });
 
