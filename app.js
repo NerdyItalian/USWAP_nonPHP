@@ -10,10 +10,10 @@ var processedData;
  * @param options: Things that we filter in by
  */
 function getData(callback, initialize, options) {
-    //var opts = options || {};
-    var opts = {
-        max_price : '400' //these values can be pulled from the page URL here are placeholder arguments.  If an argument is not to be used, omit it from the array
-    };
+    var opts = options || {};
+    //var opts = {
+    //    max_price : '400' //these values can be pulled from the page URL here are placeholder arguments.  If an argument is not to be used, omit it from the array
+    //};
     $.ajax({
         type: 'POST',
         dataType: 'json',

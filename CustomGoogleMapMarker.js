@@ -39,7 +39,7 @@ CustomMarker.prototype.draw = function() {
 			highlightDiv.className += ' promo-highlight';
 			divNum.className += ' promo-number';
 			divText.className += ' promo-price';
-			pointImg.src = 'sublease-pointer.png';
+			pointImg.src = 'promo-pointer.png';
 		} else {
 			highlightDiv.className += ' sublease-highlight';
 			divNum.className += ' sublease-number';
@@ -59,16 +59,6 @@ CustomMarker.prototype.draw = function() {
 		div.className = 'marker';
 
 		$(div).addClass('js-listing-' + this.args.marker_id);
-
-		// this is styling the div, but I want to find a way to style the text inside of the div. I'm still working on that.
-		//div.style.position = 'absolute';
-		//div.style.cursor = 'pointer';
-		//div.style.width = '60px';
-		//div.style.height = 'auto';
-		//div.style.background = 'blue';
-		//div.style.padding = '4px';
-		//div.style.color = 'white';
-		//div.style.font = '16px Helvetica, Arial, sans-serif';
 
 		//if the object has a marker_id, set the div to have a marker_id
 		if (typeof(self.args.marker_id) !== 'undefined') {
