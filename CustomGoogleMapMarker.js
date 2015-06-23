@@ -74,14 +74,15 @@ CustomMarker.prototype.draw = function() {
 		//This is your click functionality! What do you want to happen when someone clicks on the marker?
 		//This is how we can highlight the appropriate listing in the side bar?
 		google.maps.event.addDomListener(div, "click", function(event) {
-			alert('You clicked on a custom marker!');			
 			google.maps.event.trigger(self, "click");
+			$('.js-housing').scrollTo($('.js-listing-' + id), 100);
 		});
 
 		google.maps.event.addDomListener(div, 'mouseover', function(event){
 			var id = $(this).attr('class').split('js-listing-')[1];
 			$('.js-listing-' + id).addClass('listing-hover');
 			google.maps.event.trigger(self, 'mouseover');
+			$('.js-housing').scrollTo($('.js-listing-' + id), 100);
 		});
 
 		google.maps.event.addDomListener(div, 'mouseout', function(event){
