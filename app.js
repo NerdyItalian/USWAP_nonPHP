@@ -12,7 +12,7 @@ function getData(callback, initialize) {
     $.ajax({
         type: 'GET',
         dataType: 'json',
-        url:  'correctedJSON.json',
+        url:  'test.json',
         success: function(data, textstatus) {
             console.log(data);
             // Process the data
