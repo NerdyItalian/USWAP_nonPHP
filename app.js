@@ -186,8 +186,8 @@ function initializeCallback() {
     console.log("processed data inside initialize: " + processedData);
     var features = map.data.addGeoJson(processedData);
     var myLatlng;
-    //for (var l = 0; l < features.length; l++) {
-    for (var l = 0; l < 200; l++) {
+    for (var l = 0; l < features.length; l++) {
+    //for (var l = 0; l < 200; l++) {
         //console.log(features[i]);
         myLatlng = features[l].getGeometry().get();
         //console.log(features[l].A.price);
@@ -223,23 +223,10 @@ function initializeCallback() {
      * Loop through features in map.data -- the "features" property of GeoJSON, aka each listing in our housing results
      */
     //Transparent icon for potential use later: http://maps.gstatic.com/mapfiles/markers2/dd-via-transparent.png
-    map.data.setStyle(function(feature) {
-        var placeName = feature.getProperty('name');
-        if (feature.getProperty('sublease')) {
-            return {
+    map.data.setStyle({
                 icon: "http://maps.gstatic.com/mapfiles/markers2/dd-via-transparent.png",
                 visible: true,
-                clickable: true,
-                title: placeName
-            };
-        } else {
-            return {
-                icon: "http://maps.gstatic.com/mapfiles/markers2/dd-via-transparent.png",
-                visible: true,
-                clickable: true,
-                title: placeName
-            }
-        }
+                clickable: false,
     });
 
     // Sets each map pin so that, on clicking the pin, it opens a new tab that leads to the result listing URL
@@ -435,7 +422,6 @@ function formatGender(gender) {
 }
 
 
-getData(processData, initializeCallback);
 
 $('document').ready(function(){
     console.log('Document is ready!');
@@ -460,5 +446,7 @@ $('document').ready(function(){
 
         getData(processData, initializeCallback, options);
     });
+
+    getData(processData, initializeCallback);
 });
 
