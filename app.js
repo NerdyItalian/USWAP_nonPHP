@@ -7,11 +7,17 @@ var processedData;
  *
  * @param callback: The function that we call after: processData()
  * @param initialize: The function that configures the map: initializeCallback() (called -after- callback)
+ * @param options: Things that we filter in by
  */
-function getData(callback, initialize) {
+function getData(callback, initialize, options) {
+    //var opts = options || {};
+    var opts = {
+        max_price : '400' //these values can be pulled from the page URL here are placeholder arguments.  If an argument is not to be used, omit it from the array
+    };
     $.ajax({
         type: 'POST',
         dataType: 'json',
+        data: opts,
         url:  'http://umn.u-swap.org/api/v1/housing',
         success: function(data, textstatus) {
             console.log(data);
@@ -295,6 +301,7 @@ function getOtherListings(id, array) {
 function displayListings(data) {
     // Target the housing container already present in index.html
     var $housing = $('.js-housing');
+    //$housing.empty();
     var $container, i;
     // Loop through each listing
     for (i=0; i<data.length; i++) {
@@ -439,6 +446,19 @@ $('document').ready(function(){
         });
     $('.js-housing').on('mouseleave', '.accordion-group', function(){
             $('.listing-hover').removeClass('listing-hover');
+    });
+    //$('.js-filter').submit(function(event) {
+    //    event.preventDefault();
+    //});
+    $('.js-filter-btn').on('click', function(){
+        var options = {};
+        options.min_bedrooms = $('.js-filter-beds').val() || '';
+        options.min_bathrooms = $('.js-filter-baths').val() || '';
+        options.gender = $('.js-filter-gender').val() || '';
+        options.max_price = $('.js-filter-price').val() || '';
+        console.log(options);
+
+        getData(processData, initializeCallback, options);
     });
 });
 
