@@ -21,21 +21,31 @@ CustomMarker.prototype.draw = function() {
 		//setting var div as a new element on the dom
 		div = this.div = document.createElement('div');
 
-		//this is the part I wrote that creates the text inside of the overlay div and appends it to it's parent div
+
 		var divText = document.createElement('div');
 		var divNum = document.createElement('div');
 		var highlightDiv = document.createElement('div');
 		var divPoint = document.createElement('div');
 		var number = document.createTextNode(self.args.number);
-		var text = document.createTextNode(self.args.text); //creating the text node as an argument that is passed in from the object
-
+		var text = document.createTextNode(self.args.text);
 		var pointImg = document.createElement('img');
-		pointImg.src = 'sublease-pointer.png'; //this is a fixed image, if we have different colors for promoted vs sublease, we will need two image options.
 
-		divText.className = 'markerPrice'; //give classes to internal divs
+		divText.className = 'markerPrice';
 		divNum.className = 'markerNumber';
-		divPoint.className = self.args.point; //I have this as a variable so that we can give different classes based on whether a listing is 'promoted'. ie 'if (listing) == promoted, then {give promoted class}
+		divPoint.className = 'markerPoint';
 		highlightDiv.className = 'markerHighlight';
+
+		if (self.args.isSublease !== true) {
+			highlightDiv.className += ' promo-highlight';
+			divNum.className += ' promo-number';
+			divText.className += ' promo-price';
+			pointImg.src = 'sublease-pointer.png';
+		} else {
+			highlightDiv.className += ' sublease-highlight';
+			divNum.className += ' sublease-number';
+			divText.className += ' sublease-price';
+			pointImg.src = 'sublease-pointer.png';
+		}
 
 		divNum.appendChild(number);
 		divText.appendChild(text);

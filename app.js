@@ -209,7 +209,7 @@ function initializeCallback() {
                 marker_id: features[l].A.weight.toString(),
                 text: "$" + features[l].A.price.toString(),
                 number: features[l].A.weight.toString(),
-                point: 'markerPoint'
+                isSublease: features[l].A.sublease
             }
         );
         markers.push(overlay);
