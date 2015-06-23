@@ -37,6 +37,12 @@ CustomMarker.prototype.draw = function() {
 		divPoint.className = self.args.point; //I have this as a variable so that we can give different classes based on whether a listing is 'promoted'. ie 'if (listing) == promoted, then {give promoted class}
 		highlightDiv.className = 'markerHighlight';
 
+		if (self.args.isSublease !== true) {
+			highlightDiv.className += ' promo-marker';
+			divNum.className += ' promo-marker';
+			divText.className += ' promo-marker';
+		}
+
 		divNum.appendChild(number);
 		divText.appendChild(text);
 		divPoint.appendChild(pointImg);
