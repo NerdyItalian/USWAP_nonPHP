@@ -58,25 +58,38 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .markerHighlight {
-    background-color: #1694b1;
     padding: 0 1px 0 1px;
 }
-
+.sublease-highlight {
+    background-color: #1694b1;
+}
+.promo-highlight {
+    background-color: #608945;
+}
 .markerPrice {
     display: inline;
     margin: 0 auto 0 0;
     padding: 2px 4px 2px 8px;
+}
+.sublease-price {
     background-color: #1694b1;
 }
-
+.promo-price {
+    background-color: #608945;
+}
 .markerNumber {
     display: inline;
     margin: 0 0 0 auto;
-    color: #2A7F93;
-    background-color: #5ac0d9;
     padding: 2px 4px 2px 4px;
 }
-
+.sublease-number {
+    color: #2A7F93;
+    background-color: #5ac0d9;
+}
+.promo-number {
+    color: #4c753a;
+    background-color: #9ec784;
+}
 .markerPoint {
     display: block;
     text-align: center;
