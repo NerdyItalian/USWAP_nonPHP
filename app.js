@@ -215,8 +215,34 @@ function initializeCallback() {
         markers.push(overlay);
         //console.log("overlay set: ", overlay);
     }
-
-    var markerCluster = new MarkerClusterer(map, markers, {maxZoom: 16});
+    var clusterStyles = [
+        {
+            textColor: 'black',
+            textSize: 14,
+            url: 'cluster-icons/xs-cluster-v2.png',
+            height: 35,
+            width: 35
+        },
+        {
+            textColor: 'black',
+            textSize: 14,
+            url: 'cluster-icons/md-cluster-v2.png',
+            height: 40,
+            width: 36
+        },
+        {
+            textColor: 'black',
+            textSize: 14,
+            url: 'cluster-icons/lg-cluster-v2.png',
+            height: 46,
+            width: 69
+        }
+    ];
+    var mcOptions = {
+        styles: clusterStyles,
+        maxZoom: 16
+    };
+    var markerCluster = new MarkerClusterer(map, markers, mcOptions);
 
     /**
      * Set style decides whether the pin on the map should be green or red for each feature based on if it's a sublease
