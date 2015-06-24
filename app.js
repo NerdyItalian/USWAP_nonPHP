@@ -83,7 +83,7 @@ function processData(data) {
             if (listingIndex != null && !isSublease(result["aid"])) {
                 geoJsonObject["features"][listingIndex].properties["floor_plans"].push({
                     "weight": i + 1,
-                    "name": result["list"].split(" at ")[0],
+                    "name": result["floor_plan"],
                     "buildid": result["buildid"],
                     "price": result["price"],
                     "gender": result["gender"],
@@ -103,7 +103,7 @@ function processData(data) {
                         "properties": {
                             "weight": i + 1,
                             // Gets the building name, assuming "Cordelia at Brentwood" etc
-                            "name": result["list"].split(" at ")[1],
+                            "name": result["building_name"],
                             "buildid": result["buildid"],
                             "image": getThumbnail(result["images"]),
                             "sublease": false,

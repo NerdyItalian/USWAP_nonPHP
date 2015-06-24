@@ -34,9 +34,15 @@
         <div class="row">
             <div class="span12">
                 <div class="navbar">
-                    <form class="form-inline js-filter">
                         <div class="navbar-inner">
-                            <ul class="nav">
+                            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </a>
+
+                            <form class="form-inline js-filter">
+                            <ul class="nav nav-collapse collapse">
                                 <!--<a class="brand">Filter by:</a>-->
                                 <li class="divider-vertical">
                                     <input type="text" class="input-medium js-filter-price" placeholder="Max Price" name="price">
@@ -75,19 +81,19 @@
                                 </li>
                                 <button type="submit" class="btn btn-success js-filter-btn">GO!</button>
                             </ul>
+                            </form>
                         </div>
-                    </form>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="span5">
+            <div class="span5 housing-container">
                 <div class="js-housing accordion" id="js-listings">
                     <!-- Housing listings go here -->
                 </div>
             </div>
-            <div class="span7">
-                <div id="map-canvas"></div>
+            <div class="span7 map-container">
+                <div class="map" id="map-canvas"></div>
             </div>
         </div>
     </main>
