@@ -79,7 +79,7 @@ function processData(data) {
             if (listingIndex != null && !isSublease(result["aid"])) {
                 geoJsonObject["features"][listingIndex].properties["floor_plans"].push({
                     "weight": i + 1,
-                    "name": result["list"].split(" at ")[0],
+                    "name": result["floor_plan"],
                     "buildid": result["buildid"],
                     "price": result["price"],
                     "gender": result["gender"],
@@ -99,7 +99,7 @@ function processData(data) {
                         "properties": {
                             "weight": i + 1,
                             // Gets the building name, assuming "Cordelia at Brentwood" etc
-                            "name": result["list"].split(" at ")[1],
+                            "name": result["building_name"],
                             "buildid": result["buildid"],
                             "image": getThumbnail(result["images"]),
                             "sublease": false,
@@ -207,8 +207,35 @@ function initializeCallback() {
         //console.log("overlay set: ", overlay);
     }
 
+    var clusterStyles = [
+        {
+            textColor: 'black',
+            textSize: 14,
+            url: 'cluster-icons/sm-cluster.png',
+            height: 30,
+            width: 30
+        },
+        {
+            textColor: 'black',
+            textSize: 14,
+            url: 'cluster-icons/md-cluster.png',
+            height: 40,
+            width: 73
+        },
+        {
+            textColor: 'black',
+            textSize: 14,
+            url: 'cluster-icons/lg-cluster.png',
+            height: 45,
+            width: 68
+        }
+    ];
+    var mcOptions = {
+        styles: clusterStyles,
+        maxZoom: 16
+    };
     //Initialize MarkerClusterer plugin to cluster points. Max Zoom is the highest zoom level at which clusters appear.
-    var markerCluster = new MarkerClusterer(map, markers, {maxZoom: 16});
+    var markerCluster = new MarkerClusterer(map, markers, mcOptions);
 
     /**
      * Set style decides whether the pin on the map should be green or red for each feature based on if it's a sublease
