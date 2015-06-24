@@ -227,8 +227,8 @@ function initializeCallback() {
             textColor: 'black',
             textSize: 14,
             url: 'cluster-icons/md-cluster.png',
-            height: 40,
-            width: 73
+            height: 35,
+            width: 64
         },
         {
             textColor: 'black',
