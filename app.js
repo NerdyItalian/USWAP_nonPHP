@@ -445,16 +445,21 @@ function formatGender(gender) {
 
 $('document').ready(function(){
     //console.log('Document is ready!');
+    $('.js-housing').on('click', '.accordion-group', function() {
+        console.log("this latlng: ", $(this).data('latlng'));
+        coord = $(this).data('latlng');
+        map.panTo(new google.maps.LatLng(coord[1],coord[0]));
+    });
+
     $('.js-housing').on('mouseenter', '.accordion-group', function() {
             var weight = $(this).attr('class').split('js-listing-')[1];
-            $('js-listing-' + weight).addClass('listing-hover');
-            console.log("this latlng: ", $(this).data('latlng'));
-            coord = $(this).data('latlng');
-            map.panTo(new google.maps.LatLng(coord[1],coord[0]));
+            $('.js-listing-' + weight).addClass('listing-hover');
         });
+
     $('.js-housing').on('mouseleave', '.accordion-group', function(){
             $('.listing-hover').removeClass('listing-hover');
     });
+
     $('.js-filter').submit(function(event) {
         event.preventDefault();
     });

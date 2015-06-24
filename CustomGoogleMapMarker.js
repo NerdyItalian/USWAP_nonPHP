@@ -72,23 +72,20 @@ CustomMarker.prototype.draw = function() {
 
 		//This is your click functionality! What do you want to happen when someone clicks on the marker?
 		//This is how we can highlight the appropriate listing in the side bar?
-		google.maps.event.addDomListener(div, "click", function(event) {
-			var idcl = $(this).attr('class').split('js-listing-')[1];
-			google.maps.event.trigger(self, "click");
-			//On marker click, scroll JS Housing (the listings result) to the corresponding listing.
-			$('.js-housing').scrollTo($('.js-listing-' + idcl), 100);
-		});
-
-		google.maps.event.addDomListener(div, 'mouseover', function(event){
+		google.maps.event.addDomListener(div, 'mouseover', function(event) {
 			var id = $(this).attr('class').split('js-listing-')[1];
 			$('.js-listing-' + id).addClass('listing-hover');
 			google.maps.event.trigger(self, 'mouseover');
+
 			//On marker hover, scroll JS Housing (the listings result) to the corresponding listing.
-			$('.js-housing').scrollTo($('.js-listing-' + id), 100)
-			console.log($('.marker.js-listing-'+ id));
-			var long = $('.marker.js-listing-' + id).data('lng');
-			var lati = $('.marker.js-listing-'+ id).data('lat');
-			console.log("long, lati ", long, lati);
+			$('.js-housing').scrollTo($('.js-listing-' + id), 100);
+		});
+
+		google.maps.event.addDomListener(div, 'click', function(event){
+			var idcl = $(this).attr('class').split('js-listing-')[1];
+			google.maps.event.trigger(self, 'click');
+			//On marker click, scroll JS Housing (the listings result) to the corresponding listing.
+			//$('.js-housing').scrollTo($('.js-listing-' + idcl), 100);
 		});
 
 		google.maps.event.addDomListener(div, 'mouseout', function(event){
