@@ -219,21 +219,21 @@ function initializeCallback() {
         {
             textColor: 'black',
             textSize: 14,
-            url: 'cluster-icons/xs-cluster-v2.png',
-            height: 35,
-            width: 35
+            url: 'cluster-icons/sm-cluster.png',
+            height: 30,
+            width: 30
         },
         {
             textColor: 'black',
             textSize: 14,
-            url: 'cluster-icons/md-cluster-v2.png',
+            url: 'cluster-icons/md-cluster.png',
             height: 40,
-            width: 36
+            width: 73
         },
         {
             textColor: 'black',
             textSize: 14,
-            url: 'cluster-icons/lg-cluster-v2.png',
+            url: 'cluster-icons/lg-cluster.png',
             height: 45,
             width: 68
         }
