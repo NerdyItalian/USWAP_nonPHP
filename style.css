@@ -10,6 +10,32 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 300;
 }
 
+/*          Responsive Styles       */
+.js-housing {
+    height: 600px;
+    overflow: scroll;
+}
+
+@media(max-width: 767px) {
+    .js-housing {
+        height: 200px;
+    }
+    .housing-container {
+        float: none;
+        height: 200px;
+        margin-bottom: 20px;
+    }
+    .map {
+        max-height: 300px;
+    }
+    .map-container {
+        margin-bottom: 20px;
+        float: none;
+    }
+}
+
+/*          Filter Styling          */
+
 .filter-reward {
     line-height: 30px;
 }
@@ -51,10 +77,6 @@ h1, h2, h3, h4, h5, h6 {
     padding: 0;
     color: white;
     font-size: 12px;
-}
-
-.marker:hover {
-    z-index: 555555;
 }
 
 .markerHighlight {
@@ -114,7 +136,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .affiliate {
-    background: #9ec784 linear-gradient(to bottom, #9ec784, #86ba6b);
+    background: #8bae74 linear-gradient(to bottom, #8bae74, #86ba6b);
     border: 1px solid #608945;
 }
 
@@ -126,11 +148,6 @@ h1, h2, h3, h4, h5, h6 {
     width: 33%;
     box-sizing: border-box;
     padding: 5px;
-}
-
-.js-housing {
-    height: 600px;
-    overflow: scroll;
 }
 
 .listing-wrapper {
@@ -149,7 +166,7 @@ h1, h2, h3, h4, h5, h6 {
     text-align: center;
     background: #608945;
     border: 1px solid #9ec784;
-    color: #b4ff84;
+    color: #fff;
     padding: .2rem;
 }
 
@@ -160,6 +177,7 @@ h1, h2, h3, h4, h5, h6 {
 .listing-promo-details {
     float: right;
     font-style: italic;
+    margin-bottom: 16px;
 }
 
 .listing-sublease-title {
@@ -202,6 +220,7 @@ h1, h2, h3, h4, h5, h6 {
     float: right;
     padding: 2px 6px;
     font-size: 12px;
+    margin-bottom: 16px;
 }
 
 /* Applied to both the map marker and listing on hover */
@@ -209,10 +228,19 @@ h1, h2, h3, h4, h5, h6 {
 /* Hi Tracy! The hover outline behavior was starting to get really annoying so I (Rom) did some temporary styling. The first CSS rule affects the listing on the left and the second one affects the marker itself. Please change this at your leisure, we were just tired of the pink outline. No styling for affiliates, either. */
 
 .accordion-group.listing-hover {
-    background-color: #cbe5e8;
-    border: 1px solid #4d8493;
+    background-color: #8bd9eb;
+    border: 1px solid #2A7F93;
 }
 
-.listing-hover .markerPrice {
+.accordion-group.listing-hover.affiliate {
+    background: #9ec784;
+    border: 1px solid #4c753a;
+}
+
+.listing-hover .sublease-price {
     background-color: #5ac0d9;
+}
+
+.listing-hover {
+    z-index: 555555;
 }
