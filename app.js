@@ -1,5 +1,5 @@
 var processedData;
-
+var map;
 /**
  * Gets the data from the U-Swap housing API.
  * URL: 'http://umn.u-swap.org/api/v1/housing'
@@ -11,16 +11,13 @@ var processedData;
  */
 function getData(callback, initialize, options) {
     var opts = options || {};
-    //var opts = {
-    //    max_price : '400' //these values can be pulled from the page URL here are placeholder arguments.  If an argument is not to be used, omit it from the array
-    //};
     $.ajax({
         type: 'POST',
         dataType: 'json',
         data: opts,
         url:  'http://umn.u-swap.org/api/v1/housing',
         success: function(data, textstatus) {
-            console.log(data);
+            //console.log(data);
             // Process the data
             callback(data);
 
@@ -63,7 +60,6 @@ function processData(data) {
 
             /**
              * Sort promotional leases into groups based on the building they are in (buildid)
-             * TODO: Update this functionality so that all promotional listings are grouped beneath a building name instead of inside the first listing that comes up
              */
 
             // Get the index of a listing if there are other promotional listings already present with the same buildid
@@ -166,7 +162,6 @@ function processData(data) {
 
     // Save the geoJSON object globally
     processedData = geoJsonObject;
-
 }
 
 /**
@@ -175,27 +170,23 @@ function processData(data) {
  */
 
 function initializeCallback() {
-    console.log("Initialize was called");
+    //console.log("Initialize was called");
     var mapOptions = {
         center: { lat: 44.9747, lng: -93.2354},
         zoom: 12
     };
-    var map = new google.maps.Map(document.getElementById('map-canvas'),
+    map = new google.maps.Map(document.getElementById('map-canvas'),
         mapOptions);
     var markers = [];
-    console.log("processed data inside initialize: " + processedData);
+    //console.log("processed data inside initialize: " + processedData);
     var features = map.data.addGeoJson(processedData);
     var myLatlng;
     for (var l = 0; l < features.length; l++) {
-    //for (var l = 0; l < 200; l++) {
-        //console.log(features[i]);
         myLatlng = features[l].getGeometry().get();
-        //console.log(features[l].A.price);
         for (var k = l-1; k > 0; k--) {
             var thisLatlng = features[k].getGeometry().get();
             //console.log("compare ",  thisLatlng, " and ", myLatlng, ": ", (thisLatlng.equals(myLatlng)));
             if (thisLatlng.equals(myLatlng)) {
-                console.log("Offset activated");
                 //update the position of the coincident marker by applying a small multipler to its coordinates
                 var newLat = myLatlng.lat() + (Math.random() - .5) / 1500;// * (Math.random() * (max - min) + min);
                 var newLng = myLatlng.lng() + (Math.random() - .5) / 1500;// * (Math.random() * (max - min) + min);
@@ -216,26 +207,21 @@ function initializeCallback() {
         //console.log("overlay set: ", overlay);
     }
 
+    //Initialize MarkerClusterer plugin to cluster points. Max Zoom is the highest zoom level at which clusters appear.
     var markerCluster = new MarkerClusterer(map, markers, {maxZoom: 16});
 
     /**
      * Set style decides whether the pin on the map should be green or red for each feature based on if it's a sublease
      * Loop through features in map.data -- the "features" property of GeoJSON, aka each listing in our housing results
      */
-    //Transparent icon for potential use later: http://maps.gstatic.com/mapfiles/markers2/dd-via-transparent.png
+    //Set style of data layer points to be transparent, since we  use a custom overlay to display points.
     map.data.setStyle({
                 icon: "http://maps.gstatic.com/mapfiles/markers2/dd-via-transparent.png",
                 visible: true,
-                clickable: false,
-    });
-
-    // Sets each map pin so that, on clicking the pin, it opens a new tab that leads to the result listing URL
-    map.data.addListener('click', function(event) {
-        var windowObjectReference;
-        var address = event.feature.getProperty('url');
-        windowObjectReference = window.open(address, "__blank");
+                clickable: false
     });
 }
+
 //returns either the location of the property's first thumbnail url OR an "image not available" image, if there is none.
 function getThumbnail(images) {
     if (images) {
@@ -293,13 +279,15 @@ function displayListings(data) {
     // Loop through each listing
     for (i=0; i<data.length; i++) {
         var listing = data[i].properties;
+        var coordinates = data[i].geometry.coordinates;
         // Creates a basic listing
         if (listing.sublease) {
-            $container = displaySublease(listing, i);
-            console.log('sublease listing');
+            $container = displaySublease(listing, i, coordinates);
+            //console.log("listing in displaysublease: ", listing);
+            //console.log('sublease listing');
         } else {
-            $container = displayPromo(listing, i);
-            console.log('promo listing');
+            $container = displayPromo(listing, i, coordinates);
+            //console.log('promo listing');
         }
         // Add the listing to the DOM
         $housing.append($container);
@@ -317,8 +305,9 @@ function displayListings(data) {
  * @returns {*|jQuery|HTMLElement}: Real estate listing formatted for display on the DOM (but not yet appended)
  */
 
-function displaySublease(listing, index) {
-    var $container = $('<div class="accordion-group js-listing-' + listing.weight + '">');
+function displaySublease(listing, index, coord) {
+    var $container = $('<div class="accordion-group js-listing-' + listing.weight + '" ' +
+        'data-latlng=' + coord + '>');
     var $wrapper = $('<div class="accordion-heading clearfix">');
 
     var $div = $('<div class="clearfix listing-info">');
@@ -346,12 +335,14 @@ function displaySublease(listing, index) {
     $wrapper.append($link);
 
     $container.append($wrapper);
+    $container.data("latlng", coord);
 
     return $container;
 }
 
-function displayPromo(listing, index) {
-    var $container = $('<div class="accordion-group affiliate js-listing-' + listing.weight + '">');
+function displayPromo(listing, index, coord) {
+    var $container = $('<div class="accordion-group affiliate js-listing-' + listing.weight + '" ' +
+        'data-latlng=' + coord + '>');
     var $wrapper = $('<div class="accordion-heading clearfix">');
 
     var $header = $('<div class="clearfix listing-info">');
@@ -376,6 +367,7 @@ function displayPromo(listing, index) {
     $container.append('<div class="listing-promo-tag"><p>$$ Eligible for $100 cashback reward! $$</p></div>');
     $container.append($wrapper);
     $container.append(displayAccordionItems(listing.floor_plans, index));
+    //$container.data("latlng", coord);
 
     return $container;
 }
@@ -390,6 +382,7 @@ function displayPromo(listing, index) {
  */
 function displayAccordionItems(listings, index) {
     var $container = $('<div class="accordion-body collapse" id="js-listing-' + index + '">');
+
     var i, $listing;
 
     for (i=0; i<listings.length; i++) {
@@ -423,14 +416,14 @@ function formatGender(gender) {
     }
 }
 
-
-
 $('document').ready(function(){
-    console.log('Document is ready!');
+    //console.log('Document is ready!');
     $('.js-housing').on('mouseenter', '.accordion-group', function() {
             var weight = $(this).attr('class').split('js-listing-')[1];
-            //console.log('Hover on ', weight);
-            $('.js-listing-' + weight).addClass('listing-hover');
+            $('js-listing-' + weight).addClass('listing-hover');
+            console.log("this latlng: ", $(this).data('latlng'));
+            coord = $(this).data('latlng');
+            map.panTo(new google.maps.LatLng(coord[1],coord[0]));
         });
     $('.js-housing').on('mouseleave', '.accordion-group', function(){
             $('.listing-hover').removeClass('listing-hover');
@@ -447,7 +440,6 @@ $('document').ready(function(){
         if ($('.js-filter-reward').is(':checked')) {
             options.reward = 'Yes'
         }
-        console.log(options);
 
         getData(processData, initializeCallback, options);
     });

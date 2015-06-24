@@ -63,20 +63,32 @@ CustomMarker.prototype.draw = function() {
 		//if the object has a marker_id, set the div to have a marker_id
 		if (typeof(self.args.marker_id) !== 'undefined') {
 			div.dataset.marker_id = self.args.marker_id;
+			if (self.args.marker_id == 1) {
+				console.log(self);
+			}
+			div.dataset.lng = self.latlng.A;
+			div.dataset.lat = self.latlng.F;
 		}
 
 		//This is your click functionality! What do you want to happen when someone clicks on the marker?
 		//This is how we can highlight the appropriate listing in the side bar?
 		google.maps.event.addDomListener(div, "click", function(event) {
+			var idcl = $(this).attr('class').split('js-listing-')[1];
 			google.maps.event.trigger(self, "click");
-			$('.js-housing').scrollTo($('.js-listing-' + id), 100);
+			//On marker click, scroll JS Housing (the listings result) to the corresponding listing.
+			$('.js-housing').scrollTo($('.js-listing-' + idcl), 100);
 		});
 
 		google.maps.event.addDomListener(div, 'mouseover', function(event){
 			var id = $(this).attr('class').split('js-listing-')[1];
 			$('.js-listing-' + id).addClass('listing-hover');
 			google.maps.event.trigger(self, 'mouseover');
-			$('.js-housing').scrollTo($('.js-listing-' + id), 100);
+			//On marker hover, scroll JS Housing (the listings result) to the corresponding listing.
+			$('.js-housing').scrollTo($('.js-listing-' + id), 100)
+			console.log($('.marker.js-listing-'+ id));
+			var long = $('.marker.js-listing-' + id).data('lng');
+			var lati = $('.marker.js-listing-'+ id).data('lat');
+			console.log("long, lati ", long, lati);
 		});
 
 		google.maps.event.addDomListener(div, 'mouseout', function(event){
@@ -84,8 +96,6 @@ CustomMarker.prototype.draw = function() {
 			google.maps.event.trigger(self, 'mouseout');
 		});
 
-		//I have no idea what this is doing.
-		//I think it's creating a new layer for the overlays and appending them there. But I really have no idea and maybe Michelle can clarify what this is doing.
 		var panes = this.getPanes();
 		panes.overlayImage.appendChild(div);
 	}
@@ -101,7 +111,7 @@ CustomMarker.prototype.draw = function() {
 	}
 };
 
-//removal fucntion, not currently used.
+//removal function, not currently used.
 CustomMarker.prototype.remove = function() {
 	if (this.div) {
 		this.div.parentNode.removeChild(this.div);
