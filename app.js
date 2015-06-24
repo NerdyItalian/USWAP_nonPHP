@@ -234,8 +234,8 @@ function initializeCallback() {
             textColor: 'black',
             textSize: 14,
             url: 'cluster-icons/lg-cluster-v2.png',
-            height: 46,
-            width: 69
+            height: 45,
+            width: 68
         }
     ];
     var mcOptions = {
