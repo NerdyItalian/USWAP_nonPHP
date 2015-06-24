@@ -307,6 +307,7 @@ function displayListings(data) {
     for (i=0; i<data.length; i++) {
         var listing = data[i].properties;
         var coordinates = data[i].geometry.coordinates;
+        var coordinates = data[i].geometry.coordinates;
         // Creates a basic listing
         if (listing.sublease) {
             $container = displaySublease(listing, i, coordinates);
@@ -369,7 +370,7 @@ function displaySublease(listing, index, coord) {
 
 function displayPromo(listing, index, coord) {
     var $container = $('<div class="accordion-group affiliate js-listing-' + listing.weight + '" ' +
-        'data-latlng=' + coord + '>');
+        'data-latlng=[' + coord + ']>');
     var $wrapper = $('<div class="accordion-heading clearfix">');
 
     var $header = $('<div class="clearfix listing-info">');
