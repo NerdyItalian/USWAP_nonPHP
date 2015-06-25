@@ -95,10 +95,17 @@ CustomMarker.prototype.draw = function() {
 	}
 
 	google.maps.event.addDomListener(div, 'click', function(event){
-		var idcl = $(this).attr('class').split('js-listing-')[1];
-		google.maps.event.trigger(self, 'click');
+
 		//On marker click, scroll JS Housing (the listings result) to the corresponding listing.
-		$('.js-housing').scrollTo($('.js-listing-' + idcl), 100);
+		if (!mouseDetected) {
+			var id = $(this).attr('class').split('js-listing-')[1];
+			$('.js-housing').scrollTo($('.js-listing-' + id), 100);
+			$('.js-listing-' + id).addClass('listing-hover');
+
+			google.maps.event.trigger(self, 'click');
+		} else {
+			console.log("Mouse detected, no click behavior")
+		}
 	});
 
 	//Nope, no clue what this is doing either. I think it's placing the marker at the correct latitude-longitude.

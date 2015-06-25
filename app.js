@@ -1,8 +1,9 @@
 var processedData;
 var map;
+var mouseDetected = false;
 /**
  * Gets the data from the U-Swap housing API.
- * URL: 'http://umn.u-swap.org/api/v1/housing'
+ * URL: 'http://umn.u-swap.ogit rg/api/v1/housing'
  * IMPORTANT: We use a 'POST' method because of the way the API is set up.
  *
  * @param callback: The function that we call after: processData()
@@ -446,6 +447,26 @@ function formatGender(gender) {
 
 $('document').ready(function(){
     //console.log('Document is ready!');
+
+    //Check for presence of mouse (affects hover vs. click functionality on map)
+    $(function()
+    {
+        // Has mouse
+        $("body").one("mousemove", function(e)
+        {
+            mouseDetected = true;
+            console.log("Mouse Detected")
+        });
+
+        // Has touchscreen
+        $("body").one("touchstart", function(e)
+        {
+            $("body").unbind("mousemove");
+            console.log("Touchscreen detected");
+            mouseDetected = false;
+        });
+    });
+
     $('.js-housing').on('click', '.accordion-group', function() {
         var weight = $(this).attr('class').split('js-listing-')[1];
         console.log("this latlng: ", $(this).data('latlng'));
