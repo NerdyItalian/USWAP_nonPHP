@@ -449,6 +449,7 @@ $('document').ready(function(){
     $('.js-housing').on('click', '.accordion-group', function() {
         console.log("this latlng: ", $(this).data('latlng'));
         coord = $(this).data('latlng');
+        map.setZoom(17);
         map.panTo(new google.maps.LatLng(coord[1],coord[0]));
     });
 
