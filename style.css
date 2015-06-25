@@ -94,24 +94,25 @@ h1, h2, h3, h4, h5, h6 {
     padding: 2px 4px 2px 8px;
 }
 .sublease-price {
-    background-color: #1694b1;
+    color: white;
+    background-color: #37b8d9;
 }
 .promo-price {
-    background-color: #608945;
+    color: white;
+    background-color: #8cc76e;
 }
 .markerNumber {
     display: inline;
     margin: 0 0 0 auto;
     padding: 2px 4px 2px 4px;
 }
-.sublease-number {
-    color: #2A7F93;
-    background-color: #5ac0d9;
-}
-.promo-number {
-    color: #4c753a;
-    background-color: #9ec784;
-}
+
+/*   This will be the location of the dollar symbol, so I don't want to remove it just yet.   */
+/*.promo-number {*/
+    /*color: #4c753a;*/
+    /*background-color: #9ec784;*/
+/*}*/
+
 .markerPoint {
     display: block;
     text-align: center;
@@ -238,8 +239,22 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .listing-hover .sublease-price {
-    background-color: #5ac0d9;
+    color: #2A7F93;
+    background-color: #8bd9eb;
 }
+
+.listing-hover .promo-price {
+    color: #608945;
+    background-color: #aac795;
+}
+
+/*.listing-hover .sublease-highlight{*/
+    /*background-color: #2A7F93;*/
+/*}*/
+
+/*.listing-hover .promo-highlight {*/
+    /*background-color: #608945;*/
+/*}*/
 
 .listing-hover {
     z-index: 555555;

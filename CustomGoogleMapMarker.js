@@ -26,7 +26,10 @@ CustomMarker.prototype.draw = function() {
 		var divNum = document.createElement('div');
 		var highlightDiv = document.createElement('div');
 		var divPoint = document.createElement('div');
+
+		//This number needs to change to the dollar symbol for the promo listings
 		var number = document.createTextNode(self.args.number);
+
 		var text = document.createTextNode(self.args.text);
 		var pointImg = document.createElement('img');
 
@@ -50,7 +53,7 @@ CustomMarker.prototype.draw = function() {
 		divNum.appendChild(number);
 		divText.appendChild(text);
 		divPoint.appendChild(pointImg);
-		highlightDiv.appendChild(divNum);
+		//highlightDiv.appendChild(divNum);
 		highlightDiv.appendChild(divText);
 		div.appendChild(highlightDiv);
 		div.appendChild(divPoint);
