@@ -75,17 +75,19 @@ CustomMarker.prototype.draw = function() {
 
 		//This is your click functionality! What do you want to happen when someone clicks on the marker?
 		//This is how we can highlight the appropriate listing in the side bar?
-		google.maps.event.addDomListener(div, 'mouseover', function(event) {
-			var timeout = null;
-			var id = $(this).attr('class').split('js-listing-')[1];
-			$('.js-listing-' + id).addClass('listing-hover');
-			google.maps.event.trigger(self, 'mouseover');
+		if (mouseDetected) {
+			google.maps.event.addDomListener(div, 'mouseover', function (event) {
+				var timeout = null;
+				var id = $(this).attr('class').split('js-listing-')[1];
+				$('.js-listing-' + id).addClass('listing-hover');
+				google.maps.event.trigger(self, 'mouseover');
 
-			//On marker hover, scroll JS Housing (the listings result) to the corresponding listing.
-			this.timeout = window.setTimeout(function() {
-				$('.js-housing').scrollTo($('.js-listing-' + id), 100);
-			}, 500);
-		});
+				//On marker hover, scroll JS Housing (the listings result) to the corresponding listing.
+				this.timeout = window.setTimeout(function () {
+					$('.js-housing').scrollTo($('.js-listing-' + id), 100);
+				}, 500);
+			});
+		}
 
 		google.maps.event.addDomListener(div, 'mouseout', function(event){
 			$('.listing-hover').removeClass('listing-hover');
@@ -96,13 +98,17 @@ CustomMarker.prototype.draw = function() {
 		var panes = this.getPanes();
 		panes.overlayImage.appendChild(div);
 	}
+	if (!mouseDetected) {
+		google.maps.event.addDomListener(div, 'click', function (event) {
 
-	google.maps.event.addDomListener(div, 'click', function(event){
-		var idcl = $(this).attr('class').split('js-listing-')[1];
-		google.maps.event.trigger(self, 'click');
-		//On marker click, scroll JS Housing (the listings result) to the corresponding listing.
-		$('.js-housing').scrollTo($('.js-listing-' + idcl), 100);
-	});
+			//On marker click, scroll JS Housing (the listings result) to the corresponding listing.{
+			var id = $(this).attr('class').split('js-listing-')[1];
+			$('.js-housing').scrollTo($('.js-listing-' + id), 100);
+			$('.js-listing-' + id).addClass('listing-hover');
+
+			google.maps.event.trigger(self, 'click');
+		});
+	}
 
 	//Nope, no clue what this is doing either. I think it's placing the marker at the correct latitude-longitude.
 	var point = this.getProjection().fromLatLngToDivPixel(this.latlng);
