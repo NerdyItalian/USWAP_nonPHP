@@ -73,29 +73,33 @@ CustomMarker.prototype.draw = function() {
 		//This is your click functionality! What do you want to happen when someone clicks on the marker?
 		//This is how we can highlight the appropriate listing in the side bar?
 		google.maps.event.addDomListener(div, 'mouseover', function(event) {
+			var timeout = null;
 			var id = $(this).attr('class').split('js-listing-')[1];
 			$('.js-listing-' + id).addClass('listing-hover');
 			google.maps.event.trigger(self, 'mouseover');
 
 			//On marker hover, scroll JS Housing (the listings result) to the corresponding listing.
-			$('.js-housing').scrollTo($('.js-listing-' + id), 100);
-		});
-
-		google.maps.event.addDomListener(div, 'click', function(event){
-			var idcl = $(this).attr('class').split('js-listing-')[1];
-			google.maps.event.trigger(self, 'click');
-			//On marker click, scroll JS Housing (the listings result) to the corresponding listing.
-			//$('.js-housing').scrollTo($('.js-listing-' + idcl), 100);
+			this.timeout = window.setTimeout(function() {
+				$('.js-housing').scrollTo($('.js-listing-' + id), 100);
+			}, 500);
 		});
 
 		google.maps.event.addDomListener(div, 'mouseout', function(event){
 			$('.listing-hover').removeClass('listing-hover');
 			google.maps.event.trigger(self, 'mouseout');
+			window.clearTimeout(this.timeout);
 		});
 
 		var panes = this.getPanes();
 		panes.overlayImage.appendChild(div);
 	}
+
+	google.maps.event.addDomListener(div, 'click', function(event){
+		var idcl = $(this).attr('class').split('js-listing-')[1];
+		google.maps.event.trigger(self, 'click');
+		//On marker click, scroll JS Housing (the listings result) to the corresponding listing.
+		$('.js-housing').scrollTo($('.js-listing-' + idcl), 100);
+	});
 
 	//Nope, no clue what this is doing either. I think it's placing the marker at the correct latitude-longitude.
 	var point = this.getProjection().fromLatLngToDivPixel(this.latlng);
@@ -120,3 +124,18 @@ CustomMarker.prototype.remove = function() {
 CustomMarker.prototype.getPosition = function() {
 	return this.latlng;	
 };
+
+//Delay function from http://stackoverflow.com/a/6231142/4318362
+var delay = function (elem, callback) {
+	var timeout = null;
+	elem.onmouseover = function() {
+		// Set timeout to be a timer which will invoke callback after 1s
+		timeout = setTimeout(callback, 1000);
+	};
+
+	elem.onmouseout = function() {
+		// Clear any timers set to timeout
+		clearTimeout(timeout);
+	}
+};
+
