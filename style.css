@@ -94,8 +94,8 @@ h1, h2, h3, h4, h5, h6 {
     padding: 2px 4px 2px 8px;
 }
 .sublease-price {
-    color: white;
-    background-color: #37b8d9;
+    color: #333333;
+    background-color: #f5f5f5;
 }
 .promo-price {
     color: white;
@@ -245,7 +245,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .listing-hover .promo-price {
     color: #608945;
-    background-color: #aac795;
+    background-color: #c5deaf;
 }
 
 /*.listing-hover .sublease-highlight{*/
