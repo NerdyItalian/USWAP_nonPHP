@@ -447,10 +447,12 @@ function formatGender(gender) {
 $('document').ready(function(){
     //console.log('Document is ready!');
     $('.js-housing').on('click', '.accordion-group', function() {
+        var weight = $(this).attr('class').split('js-listing-')[1];
         console.log("this latlng: ", $(this).data('latlng'));
         coord = $(this).data('latlng');
         map.setZoom(17);
         map.panTo(new google.maps.LatLng(coord[1],coord[0]));
+        $('.js-listing-' + weight).addClass('listing-hover');
     });
 
     $('.js-housing').on('mouseenter', '.accordion-group', function() {
@@ -465,6 +467,7 @@ $('document').ready(function(){
     $('.js-filter').submit(function(event) {
         event.preventDefault();
     });
+
     $('.js-filter-btn').on('click', function(){
         var options = {};
         options.min_bedrooms = $('.js-filter-beds').val() || '';
