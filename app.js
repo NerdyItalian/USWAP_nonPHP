@@ -444,9 +444,17 @@ function formatGender(gender) {
     }
 }
 
+function clearFilters(){
+    $('.js-filter-beds').prop('selectedIndex', 0);
+    $('.js-filter-baths').prop('selectedIndex', 0);
+    $('.js-filter-gender').prop('selectedIndex', 0);
+    $('.js-filter-price').val('');
+    $('.js-filter-reward').attr('checked', false);
+};
+
 $('document').ready(function(){
     //console.log('Document is ready!');
-
+    clearFilters();
     //Check for presence of mouse (affects hover vs. click functionality on map)
     $(function()
     {
@@ -496,7 +504,7 @@ $('document').ready(function(){
         if ($('.js-filter-reward').is(':checked')) {
             options.reward = 'Yes'
         }
-
+        clearFilters();
         getData(processData, initializeCallback, options);
     });
 
