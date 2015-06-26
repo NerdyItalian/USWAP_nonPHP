@@ -184,7 +184,7 @@ function initializeCallback() {
     var myLatlng;
     for (var l = 0; l < features.length; l++) {
         myLatlng = features[l].getGeometry().get();
-        for (var k = l-1; k > 0; k--) {
+        for (var k = l; k > 0; k--) {
             var thisLatlng = features[k].getGeometry().get();
             //console.log("compare ",  thisLatlng, " and ", myLatlng, ": ", (thisLatlng.equals(myLatlng)));
             if (thisLatlng.equals(myLatlng)) {
@@ -307,7 +307,6 @@ function displayListings(data) {
     // Loop through each listing
     for (i=0; i<data.length; i++) {
         var listing = data[i].properties;
-        var coordinates = data[i].geometry.coordinates;
         var coordinates = data[i].geometry.coordinates;
         // Creates a basic listing
         if (listing.sublease) {
@@ -467,18 +466,17 @@ $('document').ready(function(){
         });
     });
 
-    $('.js-housing').on('click', '.accordion-group', function() {
-        var weight = $(this).attr('class').split('js-listing-')[1];
-        console.log("this latlng: ", $(this).data('latlng'));
-        coord = $(this).data('latlng');
-        map.setZoom(17);
-        map.panTo(new google.maps.LatLng(coord[1],coord[0]));
-        $('.js-listing-' + weight).addClass('listing-hover');
-    });
 
-    $('.js-housing').on('mouseenter', '.accordion-group', function() {
+    $('.js-housing').on('mouseover', '.accordion-group', function() {
             var weight = $(this).attr('class').split('js-listing-')[1];
             $('.js-listing-' + weight).addClass('listing-hover');
+            $('.js-housing').on('click', '.accordion-group', function() {
+                var weight = $(this).attr('class').split('js-listing-')[1];
+                console.log("this latlng: ", $(this).data('latlng'));
+                coord = $(this).data('latlng');
+                map.setZoom(17);
+                map.panTo(new google.maps.LatLng(coord[1],coord[0]));
+            });
         });
 
     $('.js-housing').on('mouseleave', '.accordion-group', function(){
