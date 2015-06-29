@@ -31,9 +31,6 @@ function getData(callback, initialize, options) {
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.log(textStatus, errorThrown);
-        },
-        complete: function (jqXHR, textStatus) {
-            console.log("Ajax call complete: " + textStatus)
         }
     })
 }
@@ -423,7 +420,11 @@ function displayAccordionItems(listings, index) {
     return $container;
 }
 
-// Utility display functions used by the result display
+/**
+ * formatPlural, formatGender
+ * Utility formatting functions used by the result list display -- plural beds/baths and gender
+ */
+
 function formatPlural(number, singular, plural) {
     if (number == 1) {
         return '1 ' + singular;
@@ -445,16 +446,20 @@ function formatGender(gender) {
     }
 }
 
+/**
+ * clearFilters
+ * Clears the filter bar so that it's back to default state. Called when pressing the GO button and on page load.
+ */
+
 function clearFilters(){
     $('.js-filter-beds').prop('selectedIndex', 0);
     $('.js-filter-baths').prop('selectedIndex', 0);
     $('.js-filter-gender').prop('selectedIndex', 0);
     $('.js-filter-price').val('');
     $('.js-filter-reward').attr('checked', false);
-};
+}
 
 $('document').ready(function(){
-    //console.log('Document is ready!');
     clearFilters();
     //Check for presence of mouse (affects hover vs. click functionality on map)
     $(function()
@@ -463,14 +468,12 @@ $('document').ready(function(){
         $("body").one("mousemove", function(e)
         {
             mouseDetected = true;
-            console.log("Mouse Detected")
         });
 
         // Has touchscreen
         $("body").one("touchstart", function(e)
         {
             $("body").unbind("mousemove");
-            console.log("Touchscreen detected");
             mouseDetected = false;
         });
     });
@@ -478,31 +481,24 @@ $('document').ready(function(){
 
     $('.js-housing').on('mouseover', '.accordion-group', function() {
         var weight = $(this).attr('class').split('js-listing-')[1];
-        console.log('weight after first split: ' + weight);
         weight = weight.split(' listing-hover')[0];
-        console.log('weight after second split: ' + weight);
         hover = weight;
         $('.accordion-group.js-listing-' + weight).addClass('listing-hover');
-        console.log("hover set: " + hover);
         if ($('.map-container').find('.marker.js-listing-' + weight).length != 0) {
             $('.marker.js-listing-' + weight).addClass('listing-hover');
-            console.log("marker exists on DOM, class added");
-        } else {
-            console.log("Marker not on the Dom or else if statement no worky")
         }
 
     });
 
     $('.js-housing').on('click', '.accordion-group', function() {
         var weight = $(this).attr('class').split('js-listing-')[1];
-        console.log("this latlng: ", $(this).data('latlng'));
         coord = $(this).data('latlng');
         map.setZoom(17);
         map.panTo(new google.maps.LatLng(coord[1],coord[0]));
     });
 
     $('.js-housing').on('mouseleave', '.accordion-group', function(){
-            $('.listing-hover').removeClass('listing-hover');
+        $('.listing-hover').removeClass('listing-hover');
     });
 
     $('.js-filter').submit(function(event) {
