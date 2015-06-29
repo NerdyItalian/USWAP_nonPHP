@@ -62,6 +62,12 @@ CustomMarker.prototype.draw = function() {
 		div.className = 'marker';
 
 		$(div).addClass('js-listing-' + this.args.marker_id);
+		if (hover == this.args.marker_id) {
+			console.log("Hover class set for ID " + hover);
+			$(div).addClass('listing-hover');
+		} else {
+			console.log("Hover mismatch: hover is ", hover, " and this.args.marker_id is ", this.args.marker_id);
+		}
 
 		//if the object has a marker_id, set the div to have a marker_id
 		if (typeof(self.args.marker_id) !== 'undefined') {

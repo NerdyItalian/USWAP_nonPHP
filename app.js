@@ -1,6 +1,7 @@
 var processedData;
 var map;
 var mouseDetected = false;
+var hover;
 /**
  * Gets the data from the U-Swap housing API.
  * URL: 'http://umn.u-swap.ogit rg/api/v1/housing'
@@ -476,16 +477,29 @@ $('document').ready(function(){
 
 
     $('.js-housing').on('mouseover', '.accordion-group', function() {
-            var weight = $(this).attr('class').split('js-listing-')[1];
-            $('.js-listing-' + weight).addClass('listing-hover');
-            $('.js-housing').on('click', '.accordion-group', function() {
-                var weight = $(this).attr('class').split('js-listing-')[1];
-                console.log("this latlng: ", $(this).data('latlng'));
-                coord = $(this).data('latlng');
-                map.setZoom(17);
-                map.panTo(new google.maps.LatLng(coord[1],coord[0]));
-            });
-        });
+        var weight = $(this).attr('class').split('js-listing-')[1];
+        console.log('weight after first split: ' + weight);
+        weight = weight.split(' listing-hover')[0];
+        console.log('weight after second split: ' + weight);
+        hover = weight;
+        $('.accordion-group.js-listing-' + weight).addClass('listing-hover');
+        console.log("hover set: " + hover);
+        if ($('.map-container').find('.marker.js-listing-' + weight).length != 0) {
+            $('.marker.js-listing-' + weight).addClass('listing-hover');
+            console.log("marker exists on DOM, class added");
+        } else {
+            console.log("Marker not on the Dom or else if statement no worky")
+        }
+
+    });
+
+    $('.js-housing').on('click', '.accordion-group', function() {
+        var weight = $(this).attr('class').split('js-listing-')[1];
+        console.log("this latlng: ", $(this).data('latlng'));
+        coord = $(this).data('latlng');
+        map.setZoom(17);
+        map.panTo(new google.maps.LatLng(coord[1],coord[0]));
+    });
 
     $('.js-housing').on('mouseleave', '.accordion-group', function(){
             $('.listing-hover').removeClass('listing-hover');
