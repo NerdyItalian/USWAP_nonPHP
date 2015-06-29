@@ -256,7 +256,7 @@ function getThumbnail(images) {
     if (images) {
         return images[0].thumb;
     }else{
-        return "noimageavailable.png";
+        return "img/noimageavailable.png";
     }
 }
 
@@ -370,7 +370,7 @@ function displaySublease(listing, index, coord) {
 }
 
 function displayPromo(listing, index, coord) {
-    var $container = $('<div class="accordion-group affiliate js-listing-' + listing.weight + '" ' +
+    var $container = $('<div class="accordion-group listing-affiliate js-listing-' + listing.weight + '" ' +
         'data-latlng=[' + coord + ']>');
     var $wrapper = $('<div class="accordion-heading clearfix">');
 
