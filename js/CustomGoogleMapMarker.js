@@ -42,12 +42,12 @@ CustomMarker.prototype.draw = function() {
 			highlightDiv.className += ' promo-highlight';
 			divNum.className += ' promo-number';
 			divText.className += ' promo-price';
-			pointImg.src = 'promo-pointer.png';
+			pointImg.src = 'img/promo-pointer.png';
 		} else {
 			highlightDiv.className += ' sublease-highlight';
 			divNum.className += ' sublease-number';
 			divText.className += ' sublease-price';
-			pointImg.src = 'sublease-pointer.png';
+			pointImg.src = 'img/sublease-pointer.png';
 		}
 
 		divNum.appendChild(number);
