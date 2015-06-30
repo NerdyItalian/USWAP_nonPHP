@@ -1,3 +1,8 @@
+////////////////////////////////////////////////////////////
+//// THIS JS FILE HAS BEEN ADDED TO THE MAPTOOL.JS FILE ////
+////    THIS IS NOW A DUPLICATE FILE AND NOT NEEDED    	////
+////////////////////////////////////////////////////////////
+
 //This function is a constructor that takes in the arguments that are defined by the object that is getting displayed.
 //This is currently on the index.html file on line 40
 function CustomMarker(latlng, map, args) {
