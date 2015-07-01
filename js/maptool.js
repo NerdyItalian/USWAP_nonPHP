@@ -4,7 +4,7 @@ var mouseDetected = false;
 var hover;
 /**
  * Gets the data from the U-Swap housing API.
- * URL: 'http://umn.u-swap.ogit rg/api/v1/housing'
+ * URL: 'http://umn.u-swap.org/api/v1/housing'
  * IMPORTANT: We use a 'POST' method because of the way the API is set up.
  *
  * @param callback: The function that we call after: processData()
@@ -343,7 +343,7 @@ function displaySublease(listing, index, coord) {
     var $title = $('<h3 class="listing-sublease-title">' + listing.name + '</h3>');
     var $price = $('<h3 class="listing-price">$' + listing.price + '+</h4>');
     var $details = $('<div class="listing-sublease-details"><p>' + formatPlural(listing.beds, 'bed', 'beds') + ' | ' + formatPlural(listing.baths, 'bath', 'baths') + ' | ' + formatGender(listing.gender) + '</p></div>');
-    var $button = $('<a href="' + listing.url + '" target="_blank"><button class="btn btn-default btn-sublease">View Details</button></a>');
+    var $button = $('<a href="' + listing.url + '" target="_blank"' + '<button class="btn btn-default btn-sublease">View Details</button></a>');
 
     $header.append($title);
     $header.append($price);
